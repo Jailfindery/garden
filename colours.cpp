@@ -22,17 +22,17 @@
 
 using namespace std;
 
-string def_colour() {
+string def_colour() {			// Whatever the default is for the terminal
 	string colour = "\e[0m";
 	return colour;
 }
 
-string error() {
+string error() {				// Red (non-bold variety)
 	string colour = "\e[22;31m";
 	return colour;
 }
 
-string warning() {
+string warning() {				// Orange (also non-bold)
 	string colour = "\e[22;33m";
 	return colour;
 }
