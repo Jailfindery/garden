@@ -1,0 +1,34 @@
+garden - A control program for DotSlashGarden
+
+INTRODUCTION
+
+	garden is a control program for DotSlashGarden, an gardening automation project.
+	The goal of DotSlashGarden is to create an indoor hydrogarden that requires
+	little to no human intervention. garden simply allows for the control and
+	customization of the automated systems (i.e. lighting, aeration pumps, pH
+	monitoring). It is meant to be used under Linux and has not been tested
+	with other operating systems.
+
+NOTE FROM THE AUTHOR
+
+	As much as a cliché this is, this project is, I hate to say, my very first
+	major programming project. Therefore, if you wish to make any changes to it
+	more proper, it would be very much appreciated. The type that would make me
+	redo the entire codebase are especially welcome.
+
+	I am also really new to this GitHub thing, so there will probably be some
+	weirdness for a while...
+
+USAGE
+
+	To use garden, you will need to compile it from source as no pre-packaged
+	binaries exist. You can do this by running `make' with the included makefile.
+	There is no fancy configure script or make install thing... yet.
+
+NOTES
+
+	garden is a part of the DotSlashGarden project <dotslashgarden.blogspot.ca>.
+
+AUTHOR
+
+	garden was written by Josh Schell <joshua.g.schell@gmail.com>.
