@@ -5,7 +5,7 @@ INTRODUCTION
 	garden is a control program for DotSlashGarden, an automated gardening
 	project. The goal of DotSlashGarden is to create an indoor hydrogarden that
 	requires little to no human intervention. garden simply allows for the 
-	control and	customization of the automated systems (i.e. lighting, aeration
+	control and customization of the automated systems (i.e. lighting, aeration
 	pumps, pH monitoring). It is meant to be used under Linux and has not been
 	tested with other operating systems.
 
