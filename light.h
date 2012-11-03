@@ -21,13 +21,13 @@
 #ifndef LIGHT_H_INCLUDED
 #define LIGHT_H_INCLUDED
 
-class Light
+#include "booldev.h"
+
+class Light : public BoolDev
 {
+private:
 	friend class Interface;
 
-private:
-	bool Status;
-	
 protected:
 	Light();
 	~Light();

@@ -21,13 +21,12 @@
 #ifndef PUMP_H_INCLUDED
 #define PUMP_H_INCLUDED
 
-using namespace std;
+#include "booldev.h"
 
-class Pump
+class Pump : public BoolDev
 {
-	friend class Interface;
 private:
-	bool Status;
+	friend class Interface;
 
 protected:
 	Pump();

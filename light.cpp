@@ -33,7 +33,8 @@ Light::Light()
 
 Light::~Light()
 {
-	if(Status == 1) {
+	if(Status == 1)
+	{
 		TurnOff();
 	}
 }
