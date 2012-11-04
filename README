@@ -7,14 +7,15 @@ INTRODUCTION
 	requires little to no human intervention. garden simply allows for the 
 	control and customization of the automated systems (i.e. lighting, aeration
 	pumps, pH monitoring). It is meant to be used under Linux and has not been
-	tested with other operating systems.
+	tested with other operating systems, although there is no reason it should
+	not work under a different OS.
 
 NOTE FROM THE AUTHOR
 
 	As much as this is cliché, garden is, I hate to say, my very first
 	major programming project. Therefore, if you wish to make any changes to
-	make it more proper, it would be very much appreciated. The type that
-	would make me redo the entire codebase are especially welcome.
+	make it more proper, it would be very much appreciated. Advice that
+	would make me redo the entire codebase is especially welcome.
 
 USAGE
 
