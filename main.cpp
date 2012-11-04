@@ -24,28 +24,17 @@
 /* I am using the Allman style. I'll fix it later.			*/
 
 #include <iostream>
+#include <unistd.h>
 #include "reporter.h"
 #include "interface.h"
 #include "commander.h"
 #include "scheduler.h"
 
-
-/** Program Information */
-
-/* Uncomment to define RELEASE */
-//#define READY_FOR_RELEASE
-
-// Do NOT edit this!
-#ifdef READY_FOR_RELEASE
-	#define RELEASE
-#else
-	#define DEBUG
-#endif
+// Program quality state
+#define DEBUG
 
 /* Program Version */
-string version = "trunk";
-
-/** Program Code */
+string version = "20121102";
 
 using namespace std;
 
