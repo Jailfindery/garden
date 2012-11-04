@@ -1,4 +1,4 @@
-HEADERS = circuits.h clock.h commander.h conversion.h interface.h light.h pump.h reporter.h scheduler.h water.h colours.h
+HEADERS = circuits.h clock.h commander.h conversion.h interface.h light.h pump.h reporter.h scheduler.h water.h colours.h booldev.h
 OBJECTS = circuits.o commander.o interface.o light.o main.o pump.o reporter.o scheduler.o water.o conversion.o clock.o colours.o
 
 default: garden
