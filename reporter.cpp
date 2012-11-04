@@ -107,15 +107,15 @@ void Reporter::RefreshpH(int NewpH)
 
 	if(NewpH >= 6 && NewpH <= 8)
 	{
-		Notice = "pH: Refreshed at " + pHString;
+		Notice = "pH: refreshed at " + pHString;
 	}
 	else if(NewpH < 6)
 	{
-		Notice = "pH: Acidic at " + pHString;
+		Notice = "pH: acidic at " + pHString;
 	}
 	else
 	{
-		Notice = "pH: Basic at " + pHString;
+		Notice = "pH: basic at " + pHString;
 	}
 	SendNotify(Notice);
 }
@@ -127,15 +127,15 @@ void Reporter::RefreshNutrient(int NewNutrient)
 
 	if(NewNutrient >= NutrientLower && NewNutrient <= NutrientUpper)
 	{
-		Notice = "Nutrient: Refreshed at " + NutrientString;
+		Notice = "nutrient: normal at " + NutrientString;
 	}
 	else if(NewNutrient < NutrientLower)
 	{
-		Notice = "Nutrient: Low at " + NutrientString;
+		Notice = "nutrient: low at " + NutrientString;
 	}
 	else
 	{
-		Notice = "Nutrient: High at " + NutrientString;
+		Notice = "nutrient: high at " + NutrientString;
 	}
 	SendNotify(Notice);
 }
@@ -147,11 +147,11 @@ void Reporter::RefreshLevel(int NewLevel)
 
 	if(NewLevel >= LevelLower)
 	{
-		Notice = "Water: Refreshed at " + LevelString;
+		Notice = "water: refreshed at " + LevelString;
 	}
 	else
 	{
-		Notice = "Water: Low at " + LevelString;
+		Notice = "water: low at " + LevelString;
 	}
 	SendNotify(Notice);
 }
