@@ -36,6 +36,7 @@ private:
 public:
 	Scheduler();
 	~Scheduler();
+	void CheckBoolDev();
 	void InterpretTime();
 	Interface* GetInterface() { return MyInterface; }
 };

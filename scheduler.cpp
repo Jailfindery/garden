@@ -44,19 +44,8 @@ Scheduler::~Scheduler()
 	MyInterface = 0;
 }
 
-void Scheduler::InterpretTime()
+void Scheduler::CheckBoolDev()
 {
-	PreviousTime = CurrentTime;
-	CurrentTime = GetDayTime();
-
-	#ifdef DEBUG
-		cout << "Scheduler: [ " << CurrentTime << " ] - Checking tasks " << endl;
-		cout << "\t PreviousTime = " << PreviousTime << endl;
-	#endif
-		
-	
-	/* Turn On/Off Tasks */
-
 	if(LightOnTime > PreviousTime && LightOnTime <= CurrentTime)
 	{
 		MyInterface->LightTurnOn();
@@ -73,6 +62,20 @@ void Scheduler::InterpretTime()
 	{
 		MyInterface->PumpTurnOff();
 	}
+}
+
+void Scheduler::InterpretTime()
+{
+	PreviousTime = CurrentTime;
+	CurrentTime = GetDayTime();
+
+	#ifdef DEBUG
+		cout << "Scheduler: [ " << CurrentTime << " ] - Checking tasks " << endl;
+		cout << "\t PreviousTime = " << PreviousTime << endl;
+	#endif
+		
+	/* Check On/Off Device */
+	CheckBoolDev();
 	
 	/* HealthCheck Check */
 	
