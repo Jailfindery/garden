@@ -46,7 +46,10 @@ void ParamError()
 
 int main(int argc, char *argv[])
 {
-	bool RunMode;	// Used in Reporter
+	bool RunMode;		// 0 = daemon, 1 = manual
+
+	int LogMode = 0;	/* 0 = Whatever RunMode says, 1 = force logging,
+						   2 = force to stdout							 */
 
 	/* Parameter Processing */
 
@@ -82,6 +85,18 @@ int main(int argc, char *argv[])
 						cout << "Run mode set to manual." << endl;
 					#endif
 				}
+				else if(Parameter == "--force-log")
+				{
+					LogMode = 1;
+				}
+				else if(Parameter == "--force-output")
+				{
+					LogMode = 2;
+				}
+
+			/* Add more long-form
+			   options here.	 */
+
 				else if(Parameter == "--version")
 				{
 					cout << "garden " << version << endl;
@@ -106,10 +121,6 @@ int main(int argc, char *argv[])
 					cout << "  --help		Prints this message" << endl;
 					return 0;
 				}
-
-				/* Add more long-form
-				   options here.      */
-
 				else
 				{
 					ParamError();
@@ -130,6 +141,12 @@ int main(int argc, char *argv[])
 						#ifdef DEBUG
 							cout << "Run mode set to manual." << endl;
 						#endif
+						break;
+					case 'L':
+						LogMode = 1;
+						break;
+					case 'O':
+						LogMode = 2;
 						break;
 
 					/* Add more short-form
@@ -157,11 +174,25 @@ int main(int argc, char *argv[])
 
 	/* Program Runtime */
 
+	bool PassToReporter;
+	if(LogMode = 1)
+	{
+		PassToReporter = 0;
+	}
+	else if(LogMode = 2)
+	{
+		PassToReporter = 1;
+	}
+	else
+	{
+		PassToReporter = RunMode;
+	}
+
 	if(RunMode == 1)
 	{
 		Commander* MainCommander = new Commander;
 		Interface* MainInterface = MainCommander->GetInterface();
-		Reporter* MainReporter = new Reporter(RunMode, MainInterface);
+		Reporter* MainReporter = new Reporter(PassToReporter, MainInterface);
 		
 		bool Continue = 1;
 		bool& Active = Continue;
@@ -179,7 +210,7 @@ int main(int argc, char *argv[])
 	{
 		Scheduler* MainScheduler = new Scheduler;
 		Interface* MainInterface = MainScheduler->GetInterface();
-		Reporter* MainReporter = new Reporter(RunMode, MainInterface);
+		Reporter* MainReporter = new Reporter(PassToReporter, MainInterface);
 		
 		while(true)
 		{
