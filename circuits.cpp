@@ -24,11 +24,30 @@
 	#include <iostream>
 #endif
 #include "circuits.h"
+#include "pins.h"
 
 using namespace std;
 
 /* NB! The code required to actually use the circuits will be added later.
        There isn't a lot here because I haven't made the circuits yet.     */
+
+CircuitpH::CircuitpH()
+{
+	PinIn = PinpHIn;
+	PinOut = PinpHOut;
+}
+
+CircuitNutrient::CircuitNutrient()
+{
+	PinIn = PinNutrientIn;
+	PinOut = PinNutrientOut;
+}
+
+CircuitLevel::CircuitLevel()
+{
+	PinIn = PinLevelIn;
+	PinOut = PinLevelOut;
+}
 
 int CircuitpH::Activate()
 {

@@ -23,42 +23,38 @@
 
 #include "pins.h"
 
-class CircuitpH
+class Circuit
 {
-	friend class Water;
-
-private:
+protected:
 	int PinIn;
 	int PinOut;
+	virtual int Activate() = 0;
+};
+
+class CircuitpH : public Circuit
+{
+friend class Water;
 
 protected:
-	CircuitpH() : PinIn(PinpHIn), PinOut(PinpHOut) {}
+	CircuitpH();
 	int Activate();
 };
 
-class CircuitNutrient
+class CircuitNutrient : public Circuit
 {
-	friend class Water;
-
-private:
-	int PinIn;
-	int PinOut;
+friend class Water;
 
 protected:
-	CircuitNutrient() : PinIn(PinNutrientIn), PinOut(PinNutrientOut) {}
+	CircuitNutrient();
 	int Activate();
 };
 
-class CircuitLevel
+class CircuitLevel : public Circuit
 {
-	friend class Water;
-
-private:
-	int PinIn;
-	int PinOut;
+friend class Water;
 
 protected:
-	CircuitLevel() : PinIn(PinLevelIn), PinOut(PinLevelOut) {}
+	CircuitLevel();
 	int Activate();
 };
 
