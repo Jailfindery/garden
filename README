@@ -10,19 +10,6 @@ INTRODUCTION
 	tested with other operating systems, although there is no reason it should
 	not work under a different OS.
 
-NOTE FROM THE AUTHOR
-
-	As much as this is cliché, garden is, I hate to say, my very first
-	major programming project. Therefore, if you wish to make any changes to
-	make it more proper, it would be very much appreciated. Advice that
-	would make me redo the entire codebase is especially welcome.
-
-USAGE
-
-	To use garden, you will need to compile it from source as no pre-packaged
-	binaries exist. You can do this by running `make' with the included makefile.
-	There is no fancy configure script or make install thing... yet.
-
 NOTES
 
 	garden is a part of the DotSlashGarden project <dotslashgarden.blogspot.ca>.
