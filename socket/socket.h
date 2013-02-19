@@ -22,36 +22,60 @@
 #define SOCKET_H_INCLUDED
 
 #include <string>
-#include <sys/types.h>
-#include <netinet/in.h>
+//#include <sys/types.h>
+//#include <netinet/in.h>
+#include <netdb.h>
 
-/* NB! Functions named ss* exist to
+/* NB! Functions named s* exist to
  *     prevent name collisions.
- * It stands for "socket_server."
  */
+
+/* TODO:
+*/
+
 namespace tcp
 {
-	class socket_server
+	class base_socket
 	{
 	public:
-		socket_server(int portno);
-		~socket_server();
-		int ssaccept();
-		int ssbind();
-		void close_con();
+		base_socket(int portno);
+		virtual ~base_socket();
 		std::string dump_buf();
-		void sslisten();
-		int ssread();
-		int sswrite(std::string data);
-
-	private:
+		virtual int sread() = 0;
+		virtual int swrite(std::string data) = 0;
+	protected:
 		char buffer[256];
-		sockaddr_in client_addr;
-		socklen_t client_len;
-		int confd;
 		sockaddr_in server_addr;
 		void set_port(int portno);
 		int sockfd;
+	};
+
+	class server_socket : public base_socket
+	{
+	public:
+		server_socket(int portno);
+		void close_con();
+		int saccept();
+		int sbind();
+		void slisten();
+		int sread();
+		int swrite(std::string data);
+	private:
+		sockaddr_in client_addr;
+		socklen_t client_len;
+		int confd;
+	};
+
+	class client_socket : public base_socket
+	{
+	public:
+		client_socket(std::string host, int portno);
+		int sconnect();
+		int sread();
+		int swrite(std::string data);
+	private:
+		hostent* get_host(std::string name);
+		hostent* server;
 	};
 }
 

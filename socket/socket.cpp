@@ -18,12 +18,19 @@
  *
  */
 
+#define DEBUG
+
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 #include <cstdlib>
 #include <cstring>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netdb.h>
 
 #include "socket.h"
 
@@ -36,79 +43,104 @@
 
 using namespace tcp;
 
-socket_server::socket_server(int portno)
+base_socket::base_socket(int portno)
 {
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);	// Error-handling?
 
 	bzero((char*)&server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
-	server_addr.sin_addr.s_addr = INADDR_ANY;
-
-	client_len = sizeof(client_addr);
-
-	// ASSIGN THE DAMN PORT!
 	set_port(portno);
 
 	for(int i = 0; i < 256; i++)
 		buffer[i] = '\0';
 }
 
-socket_server::~socket_server()
+base_socket::~base_socket()
 {
 	close(sockfd);
 }
 
-int socket_server::ssaccept()
-{
-	confd = accept(sockfd, (sockaddr*)&client_addr, &client_len);
-	if(confd < -1)
-	{
-		return -1;
-	}
-	return 0;
-}
-
-int socket_server::ssbind()
-{
-	if(bind(sockfd, (sockaddr*)&server_addr, sizeof(server_addr)) < 0)
-	{
-		return -1;
-	}
-	return 0;
-}
-
-void socket_server::close_con()
-{
-	close(confd);
-}
-
-std::string socket_server::dump_buf()
+std::string base_socket::dump_buf()
 {
 	std::string result;
-	for(int i = 0; buffer[i] != '\0'; i++)
+	for(int i = 0; i < 256; i++)
 		result += buffer[i];
 	return result;
 }
 
-void socket_server::sslisten()
+void base_socket::set_port(int portno)
+{
+	server_addr.sin_port = htons(portno);
+}
+
+server_socket::server_socket(int portno) : base_socket(portno)
+{
+	server_addr.sin_addr.s_addr = INADDR_ANY;
+	client_len = sizeof(client_addr);
+}
+
+int server_socket::saccept()
+{
+	confd = accept(sockfd, (sockaddr*)&client_addr, &client_len);
+	if(confd < 0)
+	{
+		return -1;
+	}
+	return 0;
+}
+
+int server_socket::sbind()
+{
+	int result = bind(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
+	return result;
+}
+
+void server_socket::close_con()
+{
+	close(confd);
+}
+
+void server_socket::slisten()
 {
 	listen(sockfd, QUEUE_LENGTH);
 }
 
-int socket_server::ssread()
+int server_socket::sread()
 {
 	int result = read(confd, buffer, 255);
 	return result;
 }
 
-void socket_server::set_port(int portno)
-{
-	server_addr.sin_port = htons(portno);
-}
-
-int socket_server::sswrite(std::string data)
+int server_socket::swrite(std::string data)
 {
 	int result = write(confd, data.c_str(), (data.length() * 8));
 	return result;
 }
+
+client_socket::client_socket(std::string host, int portno) : base_socket(portno)
+{
+	server = gethostbyname(host.c_str());
+	bcopy((char*)server->h_addr,
+          (char*)&server_addr.sin_addr.s_addr,
+          server->h_length);
+}
+
+int client_socket::sconnect()
+{
+	int result = connect(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
+	return result;
+}
+
+int client_socket::sread()
+{
+	int result = read(sockfd, buffer, 255);
+	return result;
+}
+
+int client_socket::swrite(std::string data)
+{
+	int result = write(sockfd, data.c_str(), data.length());
+	return result;
+}
+
 
