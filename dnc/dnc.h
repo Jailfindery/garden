@@ -1,7 +1,28 @@
+/*
+ *
+ *  dnc (Double New Curses) classes header for garden.
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
+ *
+ *  garden is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  garden is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with garden.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
 #ifndef DNC_H_INCLUDED
 #define DNC_H_INCLUDED
 
-#include <iostream>
+#include <string>
 #include <ncurses.h>
 #include <vector>
 
@@ -9,6 +30,8 @@
 	* Implement copy and advanced constructors (?)
 	* Allow message_win::set_message() to interpret newline chars
 	* Make windows have a minimum size (defined by the screen size)
+	* Create menu_win class
+	* Make update() private and make style::render class it
 */
 
 namespace style
@@ -16,6 +39,7 @@ namespace style
 	const int BLACKONWHITE	= 1;
 	const int BLACKONCYAN	= 2;
 	const int SHADOW		= 3;
+	const int WHITEONRED	= 4;
 
 	struct winconf_t
 	{
@@ -34,24 +58,24 @@ namespace style
 		int colour;
 		int height;
 		WINDOW* shadow;
+		static WINDOW* standard;
 		int startx;
 		int starty;
 		std::string title;
+		virtual int update();
+		static int update_std();
 		int width;
 		WINDOW* win;
-		static WINDOW* standard;
-
 	public:
 		basic_win(int height, int width, int starty, int startx);
 		basic_win(winconf_t conf);
 		virtual ~basic_win();
+		int get_colour();
 		static int start_ncurses();
 		static int stop_ncurses();
 		int set_colour(int colour_pair);
 		static int set_colour_std(int colour_pair);
 		void set_title(std::string new_title);
-		int update();
-		static int update_std();
 	};
 
 	class render

@@ -1,5 +1,25 @@
-#include <iostream>
-#include <strings.h>
+/*
+ *
+ *  dnc (Double New Curses) classes for garden.
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
+ *
+ *  garden is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  garden is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with garden.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+#include <string>
 #include <ncurses.h>
 
 #include "dnc.h"
@@ -56,18 +76,28 @@ basic_win::~basic_win()
 	wrefresh(standard);
 }
 
+int basic_win::get_colour()
+{
+	return colour;
+	/* COLOR_PAIR() still needs to be used! */
+}
+
 int basic_win::start_ncurses()
 {
 	standard = initscr();
 	start_color();
-	/* Special options, such as cbreak(), need to be
-	   put in main() after this function is called. */
+	cbreak();
+	noecho();
+	keypad(stdscr, TRUE);
+
 	if(standard == 0)
 		return -1;
 
 	// Colour definitions
 	init_pair(BLACKONWHITE, COLOR_BLACK, COLOR_WHITE);
 	init_pair(BLACKONCYAN, COLOR_BLACK, COLOR_CYAN);
+	init_pair(SHADOW, COLOR_BLACK, COLOR_BLACK);
+	init_pair(WHITEONRED, COLOR_WHITE, COLOR_RED);
 
 	touchwin(stdscr);
 	wrefresh(stdscr);
@@ -82,13 +112,15 @@ int basic_win::stop_ncurses()
 
 int basic_win::set_colour(int colour_pair)
 {
-	int result = wattrset(win, colour_pair);
+	colour = colour_pair;
+	int result = wattrset(win, COLOR_PAIR(colour_pair) );
 	return result;
 }
 
 int basic_win::set_colour_std(int colour_pair)
 {
 	int result = wattrset(stdscr, colour_pair);
+	update_std();
 	return result;
 }
 
