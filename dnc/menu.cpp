@@ -20,7 +20,6 @@
 
 
 #include <string>
-#include <deque>
 #include <menu.h>
 #include <cstdlib>
 #include <cstring>
