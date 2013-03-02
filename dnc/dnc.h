@@ -30,8 +30,6 @@
 	* Implement copy and advanced constructors (?)
 	* Allow message_win::set_message() to interpret newline chars
 	* Make windows have a minimum size (defined by the screen size)
-	* Create menu_win class
-	* Make update() private and make style::render class it
 */
 
 namespace style
@@ -56,7 +54,6 @@ namespace style
 	friend render;
 	protected:
 		int colour;
-		int height;
 		WINDOW* shadow;
 		static WINDOW* standard;
 		int startx;
@@ -64,7 +61,6 @@ namespace style
 		std::string title;
 		virtual int update();
 		static int update_std();
-		int width;
 		WINDOW* win;
 	public:
 		basic_win(int height, int width, int starty, int startx);

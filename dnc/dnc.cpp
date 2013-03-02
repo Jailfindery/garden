@@ -99,6 +99,8 @@ int basic_win::start_ncurses()
 	init_pair(SHADOW, COLOR_BLACK, COLOR_BLACK);
 	init_pair(WHITEONRED, COLOR_WHITE, COLOR_RED);
 
+	/* Cursor is off by default */
+	curs_set(0);	/* Can be changed manually for a specific use */
 	touchwin(stdscr);
 	wrefresh(stdscr);
 	return 0;
@@ -180,14 +182,28 @@ void message_win::set_message(std::string new_message)
 	int maxy, maxx;
 	getmaxyx(win, maxy, maxx);
 
-	int i = 0;
-	for(int y = 2; y < (maxy - 2), i < new_message.length(); y++)
+	/* 'i' tracks string character, 'x' tracks x-value, 'y' tracks y-value */
+	int i, x, y;
+	for(i = 0, x = 2, y = 2; i < new_message.length(); i++, x++)
 	{
-		for(int x = 2; x < (maxx - 2), i < new_message.length(); x++, i++)
+		/* (width - 2) is the max horizontal length */
+		if(new_message[i] == '\n')
 		{
-			wmove(win, y, x);
-			waddch(win, new_message[i]);
+			x = 1;	/* x will be incremented after continue */
+			y++;
+			if(y >= (maxy - 2) )
+				break;
+			continue;
 		}
+		if(x >= (maxx - 2) )
+		{
+			x = 2;
+			y++;
+			if(y >= (maxy - 2) )	/* Max height - if exceeded, text will be cut off */
+				break;
+		}
+
+		mvwaddch(win, y, x, new_message[i] );
 	}
 }
 

@@ -43,7 +43,7 @@ basic_menu::basic_menu(int height, int width, int starty, int startx, const char
                        message_win(height, width, starty, startx)
 {
 	/** Initialize Subwindow */
-	subwin = derwin(win, (height - 6), (width - 2), 4, 2);
+	subwin = derwin(win, (height - 6), (width - 2), 5, 2);
 
 	/** Initialize ITEM array */
 	int MySize;
@@ -72,7 +72,7 @@ basic_menu::basic_menu(int height, int width, int starty, int startx, const char
 
 basic_menu::basic_menu(winconf_t conf, const char* options[]) : message_win(conf)
 {
-	subwin = derwin(win, (conf.height - 6), (conf.width - 2), 4, 2);
+	subwin = derwin(win, (conf.height - 6), (conf.width - 2), 5, 2);
 
 	int MySize;
 	std::string* temp;
