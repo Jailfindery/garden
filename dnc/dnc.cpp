@@ -164,7 +164,7 @@ int render::map(basic_win* win)
 
 int render::unmap()
 {
-	if(win_list.size() < 2)
+	if(win_list.size() < 1)
 		return -1;
 	win_list.pop_back();
 
