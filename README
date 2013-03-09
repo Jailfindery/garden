@@ -5,15 +5,39 @@ INTRODUCTION
 	garden is a control program for DotSlashGarden, an automated gardening
 	project. The goal of DotSlashGarden is to create an indoor hydrogarden that
 	requires little to no human intervention. garden simply allows for the 
-	control and customization of the automated systems (i.e. lighting, aeration
-	pumps, pH monitoring). It is meant to be used under Linux and has not been
-	tested with other operating systems, although there is no reason it should
-	not work under a different OS.
+	control and customization of the automated systems (e.g. lighting, aeration
+	pumps, pH monitoring).
 
-NOTES
+DNC (Double New Curses)
 
-	garden is a part of the DotSlashGarden project <dotslashgarden.blogspot.ca>.
+	dnc is a component project of garden which provides a text user interface
+	for garden's menu system. It is an object-oriented ncurses implementation
+	based around the idea of windows.
+
+REQUIREMENTS
+
+	garden is intended to run on Linux, specifically Raspbian and the Raspberry
+	Pi. It has not been tested on other systems, so it may not function as
+	designed in other situations.
+
+	garden uses ncurses as a part of dnc (Double New Curses). Therefore, ncurses
+	libraries must be installed in order for dnc to work.
+
+PROJECT INFORMATION
+
+	garden was started on July 2012. The blog for DotSlashGarden, which includes
+	more information about garden, can be found at <dotslashgarden.blogspot.ca>.
+
+LICENSING
+
+	garden is licensed under the GNU General Public License v3.
+
+	garden also contains source code from bottlerocket, which is licensed under
+	the GNU Lesser General Public License v2.
+
+	More licensing information can be found in the respective source code files.
 
 AUTHOR
 
-	garden was written by Josh Schell <joshua.g.schell@gmail.com>.
+	This software was written by Joshua Schell <joshua.g.schell@gmail.com>.
+
