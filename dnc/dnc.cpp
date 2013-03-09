@@ -207,3 +207,76 @@ void message_win::set_message(std::string new_message)
 	}
 }
 
+void basic_progress::draw_progress()
+{
+	int maxy, maxx;
+	float percent;
+	std::string text_data, bar_data;	/* text_data -> Top line
+										   bar_data  -> Bottom line */
+	getmaxyx(win, maxy, maxx);
+
+	if(denom != 0 && numer < denom)	/* Ensure SIGFPE does not occur */
+	{
+		percent = (float)numer / (float)denom;
+		percent *= 100;
+
+		text_data += std::to_string( (int)percent) + '%';
+		text_data += std::to_string(numer) + '/' + std::to_string(denom);
+
+		/* Adds proper padding to string */
+		while(text_data.length() < (maxx - 4) )	/* Spacing of 2 */
+		{
+			if(percent < 10)
+				text_data.insert(2, 1, ' ');
+			else if(percent < 100)
+				text_data.insert(3, 1, ' ');
+			else
+				text_data.insert(4, 1, ' ');
+		}
+
+		/* Prepare bottom line */
+		int bar_length = (maxx - 6) * (percent / 100);
+		bar_data += '[';
+		while(bar_data.length() < bar_length)	/* Equal to makes it the proper length */
+			bar_data += '=';
+		bar_data += '>';
+		while(bar_data.length() < (maxx - (6 - 1) ) )	/* -1 because a ']' still needs to be added */
+			bar_data += ' ';
+		bar_data += ']';
+	}
+	else if(denom != 0 && numer >= denom)			/* When progress is complete */
+	{
+		text_data = "100%" + std::to_string(denom) + '/' + std::to_string(denom);
+		while(text_data.length() < (maxx - 4) )
+			text_data.insert(4, 1, ' ');
+
+		bar_data = "[]";
+		while(bar_data.length() < (maxx - 4) )	/* May need to be 6? */
+			bar_data.insert(1, 1, '=');
+	}
+	else
+	{
+		text_data = "undefined";
+		bar_data = "undefined";
+	}
+
+	/* Add strings to window */
+	mvwaddstr(win, (maxy - 3), 2, text_data.c_str() );
+	mvwaddstr(win, (maxy - 2), 2, bar_data.c_str() );
+
+	return;
+}
+
+bool basic_progress::complete()
+{
+	if(numer >= denom)
+		return 1;
+	return 0;
+}
+
+int basic_progress::update_progress()
+{
+	draw_progress();
+	return update();
+}
+	

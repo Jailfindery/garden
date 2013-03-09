@@ -93,6 +93,22 @@ namespace style
 		message_win(winconf_t conf) : basic_win(conf) {}
 		void set_message(std::string new_message);
 	};
+
+	class basic_progress: public message_win
+	{
+	private:
+		int& numer;
+		int denom;
+		void draw_progress();
+	public:
+		basic_progress(int height, int width, int starty, int startx,
+		               int& num, int den) : message_win(height, width, starty,
+		               startx), numer(num), denom(den) { draw_progress();}
+		basic_progress(winconf_t conf, int& num, int den) : message_win(conf),
+		               numer(num), denom(den) { draw_progress(); }
+		bool complete();
+		int update_progress();
+	};
 }
 
 #endif
