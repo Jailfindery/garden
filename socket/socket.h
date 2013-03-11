@@ -1,4 +1,5 @@
 /*
+:xa
  *
  *  Socket implementation class header for garden.
  *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
@@ -26,23 +27,19 @@
 //#include <netinet/in.h>
 #include <netdb.h>
 
-/* NB! Functions named s* exist to
- *     prevent name collisions.
- */
-
 /* TODO:
 */
 
 namespace tcp
 {
-	class base_socket
+	class socket_base
 	{
 	public:
-		base_socket(int portno);
-		virtual ~base_socket();
+		socket_base(int portno);
+		virtual ~socket_base();
 		std::string dump_buf();
-		virtual int sread() = 0;
-		virtual int swrite(std::string data) = 0;
+		virtual int read() = 0;
+		virtual int write(std::string data) = 0;
 	protected:
 		char buffer[256];
 		sockaddr_in server_addr;
@@ -50,29 +47,29 @@ namespace tcp
 		int sockfd;
 	};
 
-	class server_socket : public base_socket
+	class server : public socket_base
 	{
 	public:
-		server_socket(int portno);
+		server(int portno);
 		void close_con();
-		int saccept();
-		int sbind();
-		void slisten();
-		int sread();
-		int swrite(std::string data);
+		int accept();
+		int bind();
+		void listen();
+		int read();
+		int write(std::string data);
 	private:
 		sockaddr_in client_addr;
 		socklen_t client_len;
 		int confd;
 	};
 
-	class client_socket : public base_socket
+	class client : public socket_base
 	{
 	public:
-		client_socket(std::string host, int portno);
-		int sconnect();
-		int sread();
-		int swrite(std::string data);
+		client(std::string host, int portno);
+		int connect();
+		int read();
+		int write(std::string data);
 	private:
 		hostent* get_host(std::string name);
 		hostent* server;

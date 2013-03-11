@@ -43,7 +43,7 @@
 
 using namespace tcp;
 
-base_socket::base_socket(int portno)
+socket_base::socket_base(int portno)
 {
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);	// Error-handling?
 
@@ -55,12 +55,12 @@ base_socket::base_socket(int portno)
 		buffer[i] = '\0';
 }
 
-base_socket::~base_socket()
+socket_base::~socket_base()
 {
 	close(sockfd);
 }
 
-std::string base_socket::dump_buf()
+std::string socket_base::dump_buf()
 {
 	std::string result;
 	for(int i = 0; i < 256; i++)
@@ -68,20 +68,20 @@ std::string base_socket::dump_buf()
 	return result;
 }
 
-void base_socket::set_port(int portno)
+void socket_base::set_port(int portno)
 {
 	server_addr.sin_port = htons(portno);
 }
 
-server_socket::server_socket(int portno) : base_socket(portno)
+server::server(int portno) : socket_base(portno)
 {
 	server_addr.sin_addr.s_addr = INADDR_ANY;
 	client_len = sizeof(client_addr);
 }
 
-int server_socket::saccept()
+int server::accept()
 {
-	confd = accept(sockfd, (sockaddr*)&client_addr, &client_len);
+	confd = ::accept(sockfd, (sockaddr*)&client_addr, &client_len);
 	if(confd < 0)
 	{
 		return -1;
@@ -89,35 +89,37 @@ int server_socket::saccept()
 	return 0;
 }
 
-int server_socket::sbind()
+int server::bind()
 {
-	int result = bind(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
+	int result = ::bind(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
 	return result;
 }
 
-void server_socket::close_con()
+void server::close_con()
 {
 	close(confd);
+	return;
 }
 
-void server_socket::slisten()
+void server::listen()
 {
-	listen(sockfd, QUEUE_LENGTH);
+	::listen(sockfd, QUEUE_LENGTH);
+	return;
 }
 
-int server_socket::sread()
+int server::read()
 {
-	int result = read(confd, buffer, 255);
+	int result = ::read(confd, buffer, 255);
 	return result;
 }
 
-int server_socket::swrite(std::string data)
+int server::write(std::string data)
 {
-	int result = write(confd, data.c_str(), (data.length() * 8));
+	int result = ::write(confd, data.c_str(), (data.length() * 8));
 	return result;
 }
 
-client_socket::client_socket(std::string host, int portno) : base_socket(portno)
+client::client(std::string host, int portno) : socket_base(portno)
 {
 	server = gethostbyname(host.c_str());
 	bcopy((char*)server->h_addr,
@@ -125,21 +127,21 @@ client_socket::client_socket(std::string host, int portno) : base_socket(portno)
           server->h_length);
 }
 
-int client_socket::sconnect()
+int client::connect()
 {
-	int result = connect(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
+	int result = ::connect(sockfd, (sockaddr*)&server_addr, sizeof(server_addr));
 	return result;
 }
 
-int client_socket::sread()
+int client::read()
 {
-	int result = read(sockfd, buffer, 255);
+	int result = ::read(sockfd, buffer, 255);
 	return result;
 }
 
-int client_socket::swrite(std::string data)
+int client::write(std::string data)
 {
-	int result = write(sockfd, data.c_str(), data.length());
+	int result = ::write(sockfd, data.c_str(), data.length());
 	return result;
 }
 
