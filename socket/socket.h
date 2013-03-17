@@ -1,5 +1,4 @@
 /*
-:xa
  *
  *  Socket implementation class header for garden.
  *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
@@ -23,12 +22,7 @@
 #define SOCKET_H_INCLUDED
 
 #include <string>
-//#include <sys/types.h>
-//#include <netinet/in.h>
 #include <netdb.h>
-
-/* TODO:
-*/
 
 namespace tcp
 {
