@@ -1,6 +1,6 @@
 /*
  *
- * Configuration file interpreter class definition for garden.
+ * Configuration file interpreter class implementation for garden.
  * Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  * garden is free software: you can redistribute it and/or modify
