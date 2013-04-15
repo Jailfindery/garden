@@ -18,11 +18,11 @@
  *
  */
 
+#include <cctype>
+#include <fcntl.h>
 #include <iostream>
 #include <string>
-#include <cctype>
 #include <unistd.h>
-#include <fcntl.h>
 
 extern "C" {
 #include "br/br_cmd.h"
@@ -121,7 +121,7 @@ x10dev::x10dev(char house, int unit, string new_name)
 	address = housetemp | unittemp;
 
 	/** Set device name */
-	name = 	new_name;
+	name = new_name;
 
 	off();	/* Make sure it is off before using */
 }
@@ -157,20 +157,20 @@ void x10dev::close_device()
 
 int x10dev::on()
 {
+	if(status)		/* Check if it is on already */
+		return 1;
 	if(br_cmd(device, address, 0) < 0)
 		return -1;
-	if(status)
-		return 1;
 	status = 1;
 	return 0;
 }
 
 int x10dev::off()
 {
+	if(!status)		/* Check if it is off already */
+		return 1;
 	if(br_cmd(device, address, 1) < 0)
 		return -1;
-	if(!status)
-		return 1;
 	status = 0;
 	return 0;
 }
@@ -179,4 +179,3 @@ string x10dev::get_name()
 {
 	return name;
 }
-
