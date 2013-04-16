@@ -27,12 +27,15 @@ using namespace std;
 
 class x10dev
 {
+/* Static members represent the
+ * actual X10 Firecracker module.
+ */
   friend class Interface;	/* Allows Interface to activate it */
 
   private:
-	static int device;		/* Represents the X10 Firecracker Module */
+	static int device;
 	unsigned char address;
-	string name;	/* This may need to be eliminated if it has no use... */
+	string name;
 	bool status;
 	int on();
 	int off();
@@ -51,18 +54,17 @@ public:
 	string get_name();
 };
 
-struct x10dev_conf	/* A lightweight struct with information about x10devs */
+struct x10dev_info	/* A lightweight struct with information about x10devs */
 {
-  private:
-	int index;		/* Unique identifier from the conf file */
+	x10dev_info(int index, int MyOn, int MyOff) : on_time(MyOn),
+	                                              off_time(MyOff) {}
+	int index;
+	/* Unique, consistent ID for use in the Interface 
+	 * NB! Consistent of the index depends
+	 * on the implementation.
+	 */
 	int off_time;
 	int on_time;
-  public:
-	x10dev_conf(int MyIndex, int MyOn, int MyOff) : index(MyIndex),
-	            on_time(MyOn), off_time(MyOff) {}
-	int gindex() { return index; }		/* g* stands for 'get whatever' */
-	int goff() { return off_time; }
-	int gon() { return on_time; }
 };
 
 #endif

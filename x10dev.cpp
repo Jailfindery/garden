@@ -18,7 +18,6 @@
  *
  */
 
-#include <iostream>
 #include <string>
 #include <cctype>
 #include <unistd.h>
