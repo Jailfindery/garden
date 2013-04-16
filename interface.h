@@ -1,7 +1,7 @@
 /*
  *
  *  Interface class header for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,29 +21,29 @@
 #ifndef INTERFACE_H_INCLUDED
 #define INTERFACE_H_INCLUDED
 
-#include "light.h"
-#include "pump.h"
-#include "water.h"
-#include "reporter.h"
+#include <vector>
 
-class Reporter;
+#include "reporter.h"
+#include "water.h"
+#include "x10dev.h"
+
+//class Reporter;	// Why is this here?
 
 class Interface
 {
 private:
-	Light* MyLight;
 	Water* MyWater;
-	Pump* MyPump;
 	Reporter* MyReporter;
+	vector<x10dev*> deviceList;
+	void report_x10(int x10_return);
 public:
 	Interface();
 	~Interface();
-	void AddReporter(Reporter* NewReporter);
+	void add_Reporter(Reporter* NewReporter);
+	void add_x10dev(x10dev* NewDev);
 	/* Control Members */
-	void LightTurnOn();
-	void LightTurnOff();
-	void PumpTurnOn();
-	void PumpTurnOff();
+	void x10_on(int i);
+	void x10_off(int i);
 	void CheckpH();
 	void CheckNutrient();
 	void CheckLevel();

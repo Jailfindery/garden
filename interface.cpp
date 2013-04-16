@@ -1,7 +1,7 @@
 /*
  *
  *  Interface class functions for automation components for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,16 +18,13 @@
  *
  */
 
-#include "light.h"
-#include "pump.h"
 #include "water.h"
 #include "interface.h"
+#include "x10dev.h"
 
 Interface::Interface()
 {
-	MyLight = new Light;
 	MyWater = new Water;
-	MyPump = new Pump;
 }
 
 Interface::~Interface()
@@ -40,63 +37,45 @@ Interface::~Interface()
 	MyPump = 0;
 }
 
-void Interface::AddReporter(Reporter* NewReporter)
+void Interface::add_Reporter(Reporter* NewReporter)
 {
 	MyReporter = NewReporter;
 }
 
-/* Control Members */
-
-void Interface::LightTurnOn()
+void Interface::add_x10dev(x10dev* NewDev)
 {
-	bool result = MyLight->TurnOn();
-	if(result == 0)
-	{
-		MyReporter->LightOnPass();
-	}
-	else
-	{
-		MyReporter->LightOnFail();
-	}
+	devicelist.push_back(NewDev);
 }
 
-void Interface::LightTurnOff()
+void Interface::x10_on(int i)
 {
-	bool result = MyLight->TurnOff();
-	if(result == 0)
-	{
-		MyReporter->LightOffPass();
-	}
-	else
-	{
-		MyReporter->LightOffFail();
-	}
+	report_x10(deviceList[i]->On() );
+	return;
+}
+void Interface::x10_off(int i)
+{
+	report_x10(deviceList[i]->Off() );
+	return;
 }
 
-void Interface::PumpTurnOn()
+/* TODO: Fills in blanks with
+ *       Reporter methods.
+ */
+void Interface::report_x10(int x10_return)
 {
-	bool result = MyPump->TurnOn();
 	if(result == 0)
 	{
-		MyReporter->PumpOnPass();
+		/* Tell Reporter it worked */
+	}
+	else if(result > 0)
+	{
+		/* Tell Reporter nothing changed */
 	}
 	else
 	{
-		MyReporter->PumpOnFail();
+		/* Tell Reporter it failed */
 	}
-}
-
-void Interface::PumpTurnOff()
-{
-	bool result = MyPump->TurnOff();
-	if(result == 0)
-	{
-		MyReporter->PumpOffPass();
-	}
-	else
-	{
-		MyReporter->PumpOffFail();
-	}
+	return;
 }
 
 void Interface::CheckpH()

@@ -24,6 +24,11 @@
 #include <iostream>
 #include "interface.h"
 
+/* Message system needs to
+ * be changed. This one is
+ * too complex.
+ */
+
 using namespace std;
 
 class Interface;
