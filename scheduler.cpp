@@ -1,7 +1,7 @@
 /*
  *
  *  Scheduler class for timed tasks for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,78 +20,51 @@
 
 //#define DEBUG
 
+#ifdef DEBUG
 #include <iostream>
-#include "daemon.h"
+#endif
+
+#include <vector>
+
 #include "clock.h"
 #include "interface.h"
 #include "scheduler.h"
 
 Scheduler::Scheduler()
 {
-	MyInterface = new Interface;
 	CurrentTime = GetDayTime();
-
-	LightOnTime = TimeLightOn;
-	LightOffTime = TimeLightOff;
-	PumpOnTime = TimePumpOn;
-	PumpOffTime = TimePumpOff;
-	HealthCheckFreq = HealthFrequency;
+	PreviousTime = (CurrentTime - 1);
 }
 
-Scheduler::~Scheduler()
+/* Cycles through the list of
+ * X10 devices and checks whether
+ * they should be on or not.
+ */
+/* TODO: Make this system more
+ * robust by thinking of "states"
+ * rather than "changes."
+ */
+void Scheduler::check_x10dev()
 {
-	delete MyInterface;
-	MyInterface = 0;
+	vector<x10dev_info>::iterator iter = x10dev_list.begin();
+	for(; iter < x10dev_list.end(); iter++)
+	{
+		if(iter->on_time > PreviousTime && iter->on_time < CurrentTime)
+			MyInterface->On(iter->index);
+		else if(iter->off_time > PreviousTime && iter->off_time < CurrentTime)
+			MyInterface->Off(iter->index);
+	}
+	return;
 }
 
-void Scheduler::CheckBoolDev()
-{
-	if(LightOnTime > PreviousTime && LightOnTime <= CurrentTime)
-	{
-		MyInterface->LightTurnOn();
-	}
-	if(LightOffTime > PreviousTime && LightOffTime <= CurrentTime)
-	{
-		MyInterface->LightTurnOff();
-	}
-	if(PumpOnTime > PreviousTime && PumpOnTime <= CurrentTime)
-	{
-		MyInterface->PumpTurnOn();
-	}
-	if(PumpOffTime > PreviousTime && PumpOffTime <= CurrentTime)
-	{
-		MyInterface->PumpTurnOff();
-	}
-}
-
-void Scheduler::InterpretTime()
+void Scheduler::refresh_time()
 {
 	PreviousTime = CurrentTime;
 	CurrentTime = GetDayTime();
 
 	#ifdef DEBUG
-		cout << "Scheduler: [ " << CurrentTime << " ] - Checking tasks " << endl;
+		cout << "Scheduler: Time refresh: [ " << CurrentTime << " ]" << endl;
 		cout << "\t PreviousTime = " << PreviousTime << endl;
 	#endif
-		
-	/* Check On/Off Device */
-	CheckBoolDev();
-	
-	/* HealthCheck Check */
-	
-	int PreModTime = PreviousTime % HealthCheckFreq;
-	int CurModTime = CurrentTime % HealthCheckFreq;
-	
-	if(CurModTime != PreModTime)
-	{
-		if(CurModTime < PreModTime)
-		{
-			MyInterface->HealthCheck();
-		}
-	}
-	else if(CurModTime == 0)
-	{
-		MyInterface->HealthCheck();
-	}
 }
 

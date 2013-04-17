@@ -1,7 +1,7 @@
 /*
  *
  *  Scheduler class header for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,24 +21,28 @@
 #ifndef SCHEDULER_H_INCLUDED
 #define SCHEDULER_H_INCLUDED
 
+#include <vector>
+
+#include "interface.h"
+
+/* TODO: Add compatiblity for circuit
+ *       classes.
+ */
+
 class Scheduler
 {
 private:
-	Interface* MyInterface;
 	int CurrentTime;
 	int PreviousTime;
-	int LightOnTime;
-	int LightOffTime;
-	int PumpOnTime;
-	int PumpOffTime;
-	int HealthCheckFreq;
+	Interface* MyInterface;
+	vector<x10dev_info>* x10dev_list;
 
 public:
 	Scheduler();
-	~Scheduler();
-	void CheckBoolDev();
-	void InterpretTime();
-	Interface* GetInterface() { return MyInterface; }
+	void add_Interface(Interface* NewInterface) : MyInterface(NewInterface);
+	void add_x10dev_list(vector<x10dev_info>* MyList) : x10dev_list(MyList);
+	void check_x10dev();
+	void refresh_time();
 };
 
 #endif //SCHEDULER_H_INCLUDED
