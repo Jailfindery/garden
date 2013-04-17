@@ -176,3 +176,4 @@ string x10dev::get_name()
 {
 	return name;
 }
+
