@@ -1,7 +1,7 @@
 /*
  *
  *  Reporter class functions for logging events for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,9 @@
  *
  */
 
-#include <iostream>
+#include <fstream>
+#include <string>
+
 #include "bounds.h"
 #include "clock.h"
 #include "conversion.h"
@@ -31,73 +33,78 @@ using namespace std;
 
 class Interface;
 
-Reporter::Reporter(bool ProgramMode, Interface* MyInterface)
+Reporter::Reporter(string log_path, Interface* MyInterface)
 {
-	RunMode = ProgramMode;
-
+	log_file = log_path;		/* The acutal log file will be opened only when
+								 * a message is written to it.
+								 */
 	MyInterface->AddReporter(this);
 }
 
-void Reporter::SendNotify(string Message)
+int Reporter::SendNotify(string Message)
 {
-	string TimeNow = GetReadableTime();
-	string Report = TimeNow + " " + Message;
-
-	/*if(RunMode == 0)
-	{			Remove comment blocks when writing
-	}			to logs is figured out.
-	else*/
-	{
-		cout << Report << endl;
-	}
+	string Report = GetReadableTime() + " " + Message;
+	ofstream MyLog(log_path.c_str() )
+	if(MyLog.fail() )
+		return -1;
+	MyLog << Report << endl;
+	return 0;
 }
 
 void Reporter::LightOnPass()
 {
 	string Notice = "light: turned on";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::LightOnFail()
 {
 	string Notice = "light: activation failure";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::LightOffPass()
 {
 	string Notice = "light: turned off";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::LightOffFail()
 {
 	string Notice = "light: deactivation failure";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::PumpOnPass()
 {
 	string Notice = "pump: turned on";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::PumpOnFail()
 {
 	string Notice = "pump: activation failure";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::PumpOffPass()
 {
 	string Notice = "pump: turned off";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::PumpOffFail()
 {
 	string Notice = "pump: deactivation failure";
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::RefreshpH(int NewpH)
@@ -118,6 +125,7 @@ void Reporter::RefreshpH(int NewpH)
 		Notice = "pH: basic at " + pHString;
 	}
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::RefreshNutrient(int NewNutrient)
@@ -138,6 +146,7 @@ void Reporter::RefreshNutrient(int NewNutrient)
 		Notice = "nutrient: high at " + NutrientString;
 	}
 	SendNotify(Notice);
+	return;
 }
 
 void Reporter::RefreshLevel(int NewLevel)
@@ -154,5 +163,6 @@ void Reporter::RefreshLevel(int NewLevel)
 		Notice = "water: low at " + LevelString;
 	}
 	SendNotify(Notice);
+	return;
 }
 

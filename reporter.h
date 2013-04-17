@@ -1,7 +1,7 @@
 /*
  *
  *  Reporter class header for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,8 @@
 #ifndef REPORTER_H_INCLUDED
 #define REPORTER_H_INCLUDED
 
-#include <iostream>
+#include <string>
+
 #include "interface.h"
 
 /* Message system needs to
@@ -35,13 +36,13 @@ class Interface;
 
 class Reporter
 {
-	friend class Interface;
+  friend class Interface;
 
-private:
-	bool RunMode;
-	void SendNotify(string Message);
+  private:
+	string log_file;
+	void write(string Message);
 	
-protected:
+  protected:
 	/* Message Types - Add more situations here. */
 	void LightOnPass();
 	void LightOnFail();
@@ -55,8 +56,8 @@ protected:
 	void RefreshNutrient(int NewNutrient);
 	void RefreshLevel(int NewLevel);
 
-public:
-	Reporter(bool ProgramMode, Interface* MyInterface);
+  public:
+	Reporter(string log_path, Interface* MyInterface);
 };
 
 #endif //REPORTER_H_INCLUDED
