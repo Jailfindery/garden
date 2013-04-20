@@ -37,9 +37,9 @@ Interface::~Interface()
 	MyPump = 0;
 }
 
-void Interface::add_Reporter(Reporter* NewReporter)
+void Interface::set_log(log_file* new_log)
 {
-	MyReporter = NewReporter;
+	MyLog = new_log;
 }
 
 void Interface::add_x10dev(x10dev* NewDev)
@@ -59,21 +59,21 @@ void Interface::x10_off(int i)
 }
 
 /* TODO: Fills in blanks with
- *       Reporter methods.
+ *       log_file methods.
  */
 void Interface::report_x10(int x10_return)
 {
 	if(result == 0)
 	{
-		/* Tell Reporter it worked */
+		/* It worked */
 	}
 	else if(result > 0)
 	{
-		/* Tell Reporter nothing changed */
+		/* Nothing changed */
 	}
 	else
 	{
-		/* Tell Reporter it failed */
+		/* It failed */
 	}
 	return;
 }

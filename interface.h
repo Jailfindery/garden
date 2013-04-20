@@ -23,23 +23,21 @@
 
 #include <vector>
 
-#include "reporter.h"
+#include "log_file.h"
 #include "water.h"
 #include "x10dev.h"
-
-//class Reporter;	// Why is this here?
 
 class Interface
 {
 private:
 	Water* MyWater;
-	Reporter* MyReporter;
+	log_file MyLog;
 	vector<x10dev*> deviceList;
 	void report_x10(int x10_return);
 public:
 	Interface();
 	~Interface();
-	void add_Reporter(Reporter* NewReporter);
+	void set_log(log_file* new_log);
 	void add_x10dev(x10dev* NewDev);
 	/* Control Members */
 	void x10_on(int i);
@@ -50,5 +48,5 @@ public:
 	void HealthCheck();
 };
 
-#endif // INTERFACE_H_INCLUDED
+#endif /* INTERFACE_H_INCLUDED */
 
