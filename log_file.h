@@ -1,6 +1,6 @@
 /*
  *
- *  Reporter class header for garden.
+ *  Log file class definition for garden.
  *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
@@ -18,47 +18,21 @@
  *
  */
 
-#ifndef REPORTER_H_INCLUDED
-#define REPORTER_H_INCLUDED
+#ifndef LOG_FILE_H_INCLUDED
+#define LOG_FILE_H_INCLUDED
 
 #include <string>
 
-#include "interface.h"
-
-/* Message system needs to
- * be changed. This one is
- * too complex.
- */
-
 using namespace std;
 
-class Interface;
-
-class Reporter
+class log_file
 {
-  friend class Interface;
-
   private:
-	string log_file;
-	void write(string Message);
-	
-  protected:
-	/* Message Types - Add more situations here. */
-	void LightOnPass();
-	void LightOnFail();
-	void LightOffPass();
-	void LightOffFail();
-	void PumpOnPass();
-	void PumpOnFail();
-	void PumpOffPass();
-	void PumpOffFail();
-	void RefreshpH(int NewpH);
-	void RefreshNutrient(int NewNutrient);
-	void RefreshLevel(int NewLevel);
-
+	string path;
   public:
-	Reporter(string log_path, Interface* MyInterface);
+	log_file(string new_path);
+	int write(string message);
 };
 
-#endif //REPORTER_H_INCLUDED
+#endif /* LOG_FILE_H_INCLUDED */
 
