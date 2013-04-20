@@ -110,7 +110,7 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 
 			for(int k = 0; k < x10_number; k++)	/* Allocate device space */
 			{
-				x10dev* MyDev = new x10dev;
+				x10dev_conf* MyDev = new x10dev_conf;
 				x10_devices.push_back(MyDev);
 				#ifdef DEBUG
 				cout << "Created new x10 device." << k << endl;

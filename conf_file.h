@@ -26,7 +26,7 @@
 
 using namespace std;
 
-struct x10dev
+struct x10dev_conf
 {
 	string name;
 	int on_time;
@@ -55,7 +55,7 @@ class conf_file
 
 	/* Add configuration variables here */
 	int x10_number;
-	vector<x10dev*> x10_devices;
+	vector<x10dev_conf*> x10_devices;
 	int ph_pin;
 	int nutrient_pin;
 	int level_pin;
