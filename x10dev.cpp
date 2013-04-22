@@ -1,6 +1,6 @@
 /*
  *
- *  CM17A (X10 Firecracker) implementation class functions for garden.
+ *  CM17A (X10 Firecracker) class implementation for garden.
  *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
@@ -170,10 +170,5 @@ int x10dev::off()
 		return -1;
 	status = 0;
 	return 0;
-}
-
-string x10dev::get_name()
-{
-	return name;
 }
 

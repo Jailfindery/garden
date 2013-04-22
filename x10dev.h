@@ -1,6 +1,6 @@
 /*
  *
- *  CM17A (X10 Firecracker) implementation class header for garden.
+ *  CM17A (X10 Firecracker) class declaration for garden.
  *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
@@ -25,6 +25,19 @@
 
 using namespace std;
 
+struct x10dev_info	/* A lightweight struct with information about x10devs */
+{
+	x10dev_info(int index, int MyOn, int MyOff) : on_time(MyOn),
+	                                              off_time(MyOff) {}
+	int index;
+	/* Unique, consistent ID for use in the Interface 
+	 * NB! Consistent of the index depends
+	 * on the implementation.
+	 */
+	int off_time;
+	int on_time;
+};
+
 class x10dev
 {
 /* Static members represent the
@@ -33,7 +46,7 @@ class x10dev
   friend class Interface;	/* Allows Interface to activate it */
 
   private:
-	static int device;
+	static int device;		/* X10 Firecracker module file descriptor */
 	unsigned char address;
 	string name;
 	bool status;
@@ -49,22 +62,11 @@ class x10dev
 public:
 	x10dev(char house, int unit, string new_name);
 	virtual ~x10dev();
+	bool get_status() { return status; }
 	static int open_device(string path);
 	static void close_device();
-	string get_name();
-};
-
-struct x10dev_info	/* A lightweight struct with information about x10devs */
-{
-	x10dev_info(int index, int MyOn, int MyOff) : on_time(MyOn),
-	                                              off_time(MyOff) {}
-	int index;
-	/* Unique, consistent ID for use in the Interface 
-	 * NB! Consistent of the index depends
-	 * on the implementation.
-	 */
-	int off_time;
-	int on_time;
+	string get_name() { return name; }
+	unsigned char get_address() { return address; }
 };
 
 #endif
