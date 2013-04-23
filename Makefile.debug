@@ -1,0 +1,36 @@
+OBJECTS= br_cmd.o clock.o conf_file.o debug.o debug_menu.o dnc/dnc.o dnc/dnc_menu.o x10dev.o
+
+default: garden_debug
+
+br_cmd.o: br/br_cmd.c
+	g++ br/br_cmd.c -c -o br_cmd.o
+
+clock.o: clock.cpp conversion.h
+	g++ clock.cpp -c -o clock.o
+
+conf_file.o: conf_file.cpp
+	g++ conf_file.cpp -c -o conf_file.o -std=c++11
+
+debug.o: debug.cpp
+	g++ debug.cpp -c -o debug.o
+
+debug_menu.o: debug_menu.cpp
+	g++ debug_menu.cpp -c -o debug_menu.o -std=c++11 -lncurses
+
+dnc.o: dnc/dnc.cpp
+	g++ dnc/dnc.cpp -c -o dnc.o -std=c++11 -lncurses
+
+dnc_menu.o: dnc/dnc_menu.cpp
+	g++ dnc/dnc_menu.cpp -c -o dnc_menu.o -std=c++11 -lncurses -lmenu
+
+x10dev.o: x10dev.cpp
+	g++ x10dev.cpp -c -o x10dev.o
+
+garden_debug: $(OBJECTS)
+	g++ $(OBJECTS) -o garden_debug -lncurses -lmenu
+
+clean:
+	-rm -f *.o
+	-rm -f dnc/*.o
+	-rm -f garden_debug
+
