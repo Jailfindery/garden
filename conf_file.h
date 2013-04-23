@@ -34,7 +34,7 @@ struct x10dev_conf
 	char housecode;
 	int unit;
 
-	x10dev()	/* Sets defaults */
+	x10dev_conf()	/* Sets defaults */
 	{
 		name = "unknown";
 		on_time = -1;

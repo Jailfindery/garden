@@ -21,6 +21,10 @@
 #ifndef X10DEV_H_INCLUDED
 #define X10DEV_H_INCLUDED
 
+#ifdef GARDEN_DEBUG
+#include "debug_menu.h"
+#endif
+
 #include <string>
 
 using namespace std;
@@ -44,6 +48,13 @@ class x10dev
  * actual X10 Firecracker module.
  */
   friend class Interface;	/* Allows Interface to activate it */
+
+  /* Allows the debugging interface to
+   * access it directly.
+   */
+  #ifdef GARDEN_DEBUG
+  friend void debug_menu::x10_menu_specific(x10dev*);
+  #endif /* GARDEN_DEBUG */
 
   private:
 	static int device;		/* X10 Firecracker module file descriptor */

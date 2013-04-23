@@ -1,7 +1,7 @@
 /*
  *
  *  Data structure conversion functions header for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,12 +21,25 @@
 #ifndef CONVERSION_H_INCLUDED
 #define CONVERSION_H_INCLUDED
 
-#include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
-string IntToString(int MyInt);
-int StringToInt(string MyString);
+string IntToString(int MyInt)
+{
+	ostringstream converter;
+	converter << MyInt;
+	return converter.str();
+}
 
-#endif //CONVERSION_H_INCLUDED
+int StringToInt(string MyString)
+{
+	istringstream converter(MyString);
+	int result;
+	converter >> result;
+	return result;
+}
+
+#endif /* CONVERSION_H_INCLUDED */
 

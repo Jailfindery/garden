@@ -18,7 +18,7 @@
  *
  */
 
-
+#include <sstream>
 #include <string>
 #include <ncurses.h>
 
@@ -28,6 +28,19 @@ WINDOW* style::basic_win::standard = NULL;
 
 namespace style
 {
+	/* I don't always fail, but when
+	 * I do, I always make C++11 stuff
+	 * stop working...
+	 *
+	 * Love, g++
+	 */
+	std::string to_string(int MyInt)
+	{
+		std::ostringstream converter;
+		converter << MyInt;
+		return converter.str();
+	}
+
 	void wclear_screen(WINDOW* win)
 	{
 		int maxy, maxx;
@@ -220,8 +233,8 @@ void basic_progress::draw_progress()
 		percent = (float)numer / (float)denom;
 		percent *= 100;
 
-		text_data += std::to_string( (int)percent) + '%';
-		text_data += std::to_string(numer) + '/' + std::to_string(denom);
+		text_data += to_string( (int)percent) + '%';
+		text_data += to_string(numer) + '/' + to_string(denom);
 
 		/* Adds proper padding to string */
 		while(text_data.length() < (maxx - 4) )	/* Spacing of 2 */
@@ -246,7 +259,7 @@ void basic_progress::draw_progress()
 	}
 	else if(denom != 0 && numer >= denom)			/* When progress is complete */
 	{
-		text_data = "100%" + std::to_string(denom) + '/' + std::to_string(denom);
+		text_data = "100%" + to_string(denom) + '/' + to_string(denom);
 		while(text_data.length() < (maxx - 4) )
 			text_data.insert(4, 1, ' ');
 

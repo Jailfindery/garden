@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "menu.h"
+#include "dnc_menu.h"
 
 using namespace style;
 
