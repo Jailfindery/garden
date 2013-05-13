@@ -1,3 +1,4 @@
 garden_debug
 Makefile.debug.old
+obj/*
 
