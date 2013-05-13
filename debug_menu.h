@@ -30,6 +30,7 @@ class debug_menu
 	debug_menu();
 	~debug_menu();
 	void add_x10(x10dev* new_dev) { x10_list.push_back(new_dev); }
+	int start();
 	int main_menu();
 };
 

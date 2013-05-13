@@ -25,14 +25,15 @@
 #include "debug_menu.h"
 #endif
 
+#include <istringstream>
 #include <string>
 
 using namespace std;
 
 struct x10dev_info	/* A lightweight struct with information about x10devs */
 {
-	x10dev_info(int index, int MyOn, int MyOff) : on_time(MyOn),
-	                                              off_time(MyOff) {}
+	x10dev_info(int index, int MyOn, int MyOff) : off_time(MyOff),
+	                                              on_time(MyOn) {}
 	int index;
 	/* Unique, consistent ID for use in the Interface 
 	 * NB! Consistent of the index depends

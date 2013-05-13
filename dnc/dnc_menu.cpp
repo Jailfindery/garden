@@ -18,13 +18,18 @@
  *
  */
 
-
-#include <string>
-#include <menu.h>
 #include <cstdlib>
 #include <cstring>
+#include <menu.h>
+#include <string>
 
 #include "dnc_menu.h"
+
+#define DEBUG
+
+#ifdef DEBUG
+#include <iostream>
+#endif
 
 using namespace style;
 
@@ -52,8 +57,9 @@ basic_menu::basic_menu(int height, int width, int starty, int startx, const char
 	items = (ITEM**)calloc( (MySize + 1), sizeof(ITEM*) );	/* Could be be done in cpp style? */
 	for(int i = 0; i < MySize; i++)		/* Adds strings to the menu */
 	{
-		temp = new std::string(options[i]);		/* This type of thing may */
-		while(temp->size() < (width - 7) )		/* cause a memory leak... */
+		/* FIXME: This code may be leaky! */
+		temp = new std::string(options[i]);
+		while(temp->size() < (width - 7) )
 			*temp += " ";
 		options[i] = temp->c_str();
 		items[i] = new_item(options[i], NULL);
@@ -125,16 +131,16 @@ int basic_menu::select_item()
 		ch = getch();
 		switch(ch)
 		{
-		case KEY_UP:
+		  case KEY_UP:
 			menu_driver(menu, REQ_UP_ITEM);
 			break;
-		case KEY_DOWN:
+		  case KEY_DOWN:
 			menu_driver(menu, REQ_DOWN_ITEM);
 			break;
-		case 10:	/* Enter key */
+		  case 10:	/* Enter key */
 			MyChoice = item_index(current_item(menu) );
 			break;
-		default:
+		  default:
 			break;
 		}
 	}
@@ -143,7 +149,7 @@ int basic_menu::select_item()
 
 int basic_menu::update()
 {
-	int result;
+	int result = 0;
 	result |= post_menu(menu);
 	result |= touchwin(shadow);
 	result |= wrefresh(shadow);

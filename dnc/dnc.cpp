@@ -98,6 +98,7 @@ int basic_win::get_colour()
 int basic_win::start_ncurses()
 {
 	standard = initscr();
+	timeout(-1);
 	start_color();
 	cbreak();
 	noecho();
@@ -151,7 +152,7 @@ void basic_win::set_title(std::string new_title)
 
 int basic_win::update()
 {
-	int result;
+	int result = 0;
 	result |= touchwin(shadow);
 	result |= wrefresh(shadow);
 	result |= touchwin(win);
@@ -162,7 +163,7 @@ int basic_win::update()
 int basic_win::update_std()
 {
 	wclear_screen(standard);
-	int result;
+	int result = 0;
 	result |= touchwin(standard);
 	result |= wrefresh(standard);
 	return result;
@@ -181,12 +182,16 @@ int render::unmap()
 		return -1;
 	win_list.pop_back();
 
-	int result;
+	int result = 0;
 	result |= basic_win::update_std();
-	for(int i = 0; i < win_list.size(); i++)
+	std::vector<basic_win*>::iterator iter;
+	for(iter = win_list.begin(); iter < win_list.end(); iter++)
 	{
-		win_list[i]->update();
-	}
+		basic_win* temp = *iter;
+		temp->update();		/* Does this call basic_menu or
+							 * similar's update()?
+							 */
+	}	
 	return result;
 }
 

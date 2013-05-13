@@ -28,14 +28,15 @@ int main(int argc, char** argv)
 	}
 	else
 	{
+		/* TODO: Print error when config file is incorrect. */
+
 		try		/* ~/.gardenrc */
 		{
-			MyConf = new conf_file("~/.gardenrc");
+			MyConf = new conf_file("/home/josh/.gardenrc");
 		}
 		catch(...)	/* It failed, but we don't care why; we simply move on. */
 		{
-			delete MyConf;	/* Ensures the pointer is cleared. */
-			MyConf = 0;
+			MyConf = 0;	/* Ensures the pointer is cleared */
 		}
 		if(MyConf == 0)
 		{
@@ -45,7 +46,6 @@ int main(int argc, char** argv)
 			}
 			catch(...)	/* Also failed, but we must move on... */
 			{
-				delete MyConf;
 				MyConf = 0;
 			}
 		}
@@ -60,17 +60,17 @@ int main(int argc, char** argv)
 	}
 	cout << "done." << endl;
 
-	debug_menu* MyMenu = new debug_menu;	/* Create the TUI */
-
 	/* TODO: Make X10 Firecracker path configurable. */
 	cout << "Opening X10 Firecracker module... ";
-	if(x10dev::open_device("/dev/ttyUSB0") != 0)
+	if(x10dev::open_device("/dev/ttyUSB0") < 0)
 	{
 		cerr << "failed!" << endl;
 		cerr << "E: Unable to open Firecracker module." << endl;
 		return -1;
 	}
 	cout << "done." << endl;
+
+	debug_menu* MyMenu = new debug_menu;	/* Create the TUI */
 
 	cout << "Populating X10 devices... ";
 	vector<x10dev*> device_list;
@@ -90,6 +90,9 @@ int main(int argc, char** argv)
 			cerr << "failed!" << endl;
 			cerr << "E: X10 device, index " << i << ": ";
 			cerr << except << endl;
+
+			delete MyMenu;		/* Ensures fb goes back to normal */
+			MyMenu = 0;
 			return -1;
 		}
 		MyMenu->add_x10(temp_x10);
@@ -98,9 +101,23 @@ int main(int argc, char** argv)
 
 	/* TODO: Add circuit initialization. */
 
+	if(MyMenu->start() != 0)
+	{
+		delete MyMenu;
+		MyMenu = 0;
+		cerr << "Failed to start ncurses." << endl;
+		return -1;
+	}
 	int menu_return = MyMenu->main_menu();	/* Give control to the TUI */
+
+	/* Stopping and clean-up */
 	delete MyMenu;
 	MyMenu = 0;
+	for(int i = 0; i < device_list.size(); i++)
+	{
+		delete device_list[i];
+		device_list[i] = 0;
+	}
 	x10dev::close_device();
 	return menu_return;
 }

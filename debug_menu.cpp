@@ -9,18 +9,30 @@
 #include "dnc/dnc_menu.h"
 #include "x10dev.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 debug_menu::debug_menu()
 {
-	style::basic_win::start_ncurses();
-	getmaxyx(stdscr, maxy, maxx);
 	menu_stack = new style::render;
 }
 
 debug_menu::~debug_menu()
 {
-	style::basic_win::stop_ncurses();
 	delete menu_stack;
 	menu_stack = 0;
+	style::basic_win::stop_ncurses();
+}
+
+int debug_menu::start()
+{
+	int MyReturn = style::basic_win::start_ncurses();
+	style::basic_win::set_colour_std(COLOR_PAIR(style::BLACKONCYAN) );
+	getmaxyx(stdscr, maxy, maxx);
+	return MyReturn;
 }
 
 int debug_menu::main_menu()		/* All menus should follow this format: */
@@ -28,13 +40,13 @@ int debug_menu::main_menu()		/* All menus should follow this format: */
 	/* Declaration and basic config for menu window */
 	style::basic_menu* menu;
 	style::winconf_t MyConf;
-	MyConf.height = (maxx - 4);
-	MyConf.width = (maxy - 4);
-	MyConf.starty = 2;
-	MyConf.startx = 2;
+	MyConf.height = (maxy - 6);
+	MyConf.width = (maxx - 6);
+	MyConf.starty = 3;
+	MyConf.startx = 3;
 
 	/* Define the menu entries */
-	const char* options[4] = { "X10 Devices", "Time", "Quit", NULL };
+	const char* options[] = { "X10 Devices", "Time", "Quit", NULL };
 
 	/* Create, post-configure, and render the menu */
 	menu = new style::basic_menu(MyConf, options);
@@ -64,23 +76,26 @@ int debug_menu::main_menu()		/* All menus should follow this format: */
 			menu_stack->unmap();
 			delete menu;
 			menu = 0;
-			style::basic_win::stop_ncurses();	/* B/c this is the main menu */
 			return 0;
 			break;
 		  default:			/* Something else? */
+			delete menu;
+			menu = 0;
 			break;
 		}
 	}
-	return -1;		/* Should never be reached */
+	delete menu;	/* Should never be reached */
+	menu = 0;
+	return -1;
 }
 
 void debug_menu::time_menu()	/* Not really a menu! */
 {
 	style::basic_progress* win;
 	style::winconf_t MyConf;
-	MyConf.height = 9;
-	MyConf.width = (maxy - 40);
-	MyConf.startx = (maxx - 9) / 2;
+	MyConf.height = 11;
+	MyConf.width = (maxx - 40);
+	MyConf.startx = (maxy - 9) / 2;
 	MyConf.starty = 20;
 
 	/* Preparing time stuff */
@@ -106,10 +121,10 @@ void debug_menu::x10_menu()
 {
 	style::basic_menu* menu;
 	style::winconf_t MyConf;
-	MyConf.height = (maxx - 6);
-	MyConf.width = (maxy - 8);
-	MyConf.starty = 3;
-	MyConf.startx = 4;
+	MyConf.height = (maxy - 12);
+	MyConf.width = (maxx - 12);
+	MyConf.starty = (maxy - MyConf.height) / 2;
+	MyConf.startx = (maxx - MyConf.width) / 2;
 
 	const char* options[x10_list.size() + 2];		/* I hate C-strings... */
 	for(int i = 0; i < x10_list.size(); i++)
@@ -118,12 +133,14 @@ void debug_menu::x10_menu()
 	options[x10_list.size() + 1] = NULL;
 
 	menu = new style::basic_menu(MyConf, options);
+	menu->set_title("X10 Devices");
+	menu->set_message("The following X10 devices are connected:");
 	menu_stack->map(menu);
 
 	while(true)
 	{
 		int selected_entry = menu->select_item();
-		if(selected_entry = x10_list.size() )	/* Last entry (i.e. quit) */
+		if(selected_entry == x10_list.size() )	/* Last entry (i.e. quit) */
 		{
 			menu_stack->unmap();
 			delete menu;
@@ -142,10 +159,10 @@ void debug_menu::x10_menu_specific(x10dev* specific)
 {
 	style::basic_menu* menu;
 	style::winconf_t MyConf;
-	MyConf.height = (maxx - 8);
-	MyConf.width = (maxy - 10);
-	MyConf.starty = 4;
-	MyConf.startx = 5;
+	MyConf.height = 10;
+	MyConf.width = 45;
+	MyConf.starty = (maxy - MyConf.height) / 2;
+	MyConf.startx = (maxx - MyConf.width) / 2;
 
 	const char* options[4] = { "Activate", "Deactivate", "Exit", NULL };
 

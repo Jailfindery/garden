@@ -133,10 +133,14 @@ x10dev::~x10dev()
 
 int x10dev::open_device(string path)
 {
-	/* Paranoid workaround */
-	while(device = open("/dev/null", 0, 0) < 3)
-		if(device < 0) return -1;
+	/* Ensures that one does not open the stdout of
+	 * the device.
+	 */
+	while( (device = open("/dev/null", 0, 0) ) < 3)
+		if(device < 0)
+			return -1;
 	close(device);
+
 	device = open(path.c_str(), O_RDONLY | O_NONBLOCK);
 	return device;
 }
