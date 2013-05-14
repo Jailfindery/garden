@@ -159,23 +159,22 @@ void x10dev::close_device()
  *
  */
 
+/* TODO: Create checks so the program does not block
+ *       if the desired state already exists.
+ */
 int x10dev::on()
 {
-	if(status)		/* Check if it is on already */
-		return 1;
 	if(br_cmd(device, address, 0) < 0)
 		return -1;
-	status = 1;
+	status = true;
 	return 0;
 }
 
 int x10dev::off()
 {
-	if(!status)		/* Check if it is off already */
-		return 1;
 	if(br_cmd(device, address, 1) < 0)
 		return -1;
-	status = 0;
+	status = false;
 	return 0;
 }
 

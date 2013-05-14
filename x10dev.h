@@ -25,7 +25,6 @@
 #include "debug_menu.h"
 #endif
 
-#include <istringstream>
 #include <string>
 
 using namespace std;
@@ -62,6 +61,9 @@ class x10dev
 	unsigned char address;
 	string name;
 	bool status;
+  #ifdef X10DEV_TESTING
+  public:
+  #endif
 	int on();
 	int off();
 /*

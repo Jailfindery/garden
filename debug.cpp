@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 
 	/* TODO: Make X10 Firecracker path configurable. */
 	cout << "Opening X10 Firecracker module... ";
-	if(x10dev::open_device("/dev/ttyUSB0") < 0)
+	if(x10dev::open_device("/dev/ttyUSB0") < 3)	/* We should not use stdout. */
 	{
 		cerr << "failed!" << endl;
 		cerr << "E: Unable to open Firecracker module." << endl;
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
 	{
 		delete MyMenu;
 		MyMenu = 0;
-		cerr << "Failed to start ncurses." << endl;
+		cerr << "E: Failed to start ncurses." << endl;
 		return -1;
 	}
 	int menu_return = MyMenu->main_menu();	/* Give control to the TUI */

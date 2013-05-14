@@ -1,12 +1,35 @@
-HEADERS= br/br_cmd.c clock.cpp conf_file.cpp debug.cpp debug_menu.cpp dnc/dnc.cpp dnc/dnc_menu.cpp x10dev.cpp
-OBJECTS= br_cmd.o clock.o conf_file.o debug.o debug_menu.o dnc.o dnc_menu.o x10dev.o
+OBJECTS= obj/br_cmd.o obj/clock.o obj/conf_file.o obj/debug.o obj/debug_menu.o obj/dnc.o obj/dnc_menu.o obj/x10dev.o
 
-default: garden_debug
+default: bin/garden_debug
 
-garden_debug: $(HEADERS)
-	g++ $(HEADERS) -o garden_debug -lmenu -lncurses -std=c++11
+obj/br_cmd.o: br/br_cmd.c
+	g++ br/br_cmd.c -c -o obj/br_cmd.o
+
+obj/clock.o: clock.cpp conversion.h
+	g++ clock.cpp -c -o obj/clock.o
+
+obj/conf_file.o: conf_file.cpp
+	g++ conf_file.cpp -c -o obj/conf_file.o -std=c++11
+
+obj/debug.o: debug.cpp
+	g++ debug.cpp -c -o obj/debug.o
+
+obj/debug_menu.o: debug_menu.cpp
+	g++ debug_menu.cpp -c -o obj/debug_menu.o -std=c++11
+
+obj/dnc.o: dnc/dnc.cpp
+	g++ dnc/dnc.cpp -c -o obj/dnc.o -std=c++11
+
+obj/dnc_menu.o: dnc/dnc_menu.cpp
+	g++ dnc/dnc_menu.cpp -c -o obj/dnc_menu.o
+
+obj/x10dev.o: x10dev.cpp
+	g++ x10dev.cpp -c -o obj/x10dev.o
+
+bin/garden_debug: $(OBJECTS)
+	g++ $(OBJECTS) -o bin/garden_debug -lmenu -lncurses
 
 clean:
 	-rm -f *.o
-	-rm -f garden_debug
+	-rm -f bin/garden_debug
 
