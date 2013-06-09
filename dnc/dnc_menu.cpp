@@ -126,6 +126,10 @@ int basic_menu::select_item()
 	int ch;
 	while(MyChoice == -1)
 	{
+		touchwin(shadow);
+		wrefresh(shadow);
+		touchwin(win);
+		wrefresh(win);
 		touchwin(subwin);
 		wrefresh(subwin);
 		ch = getch();
