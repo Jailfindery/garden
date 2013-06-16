@@ -79,6 +79,7 @@ namespace style
 	private:
 		std::vector<basic_win*> win_list;
 	public:
+		int frefresh();		/* Forces all windows in stack to be refreshed. */
 		int map(basic_win* win);
 		int unmap();
 	};

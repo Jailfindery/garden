@@ -52,7 +52,6 @@ int debug_menu::main_menu()		/* All menus should follow this format: */
 	menu = new style::basic_menu(MyConf, options);
 	menu->set_title("garden Debug - Main Menu");
 	menu->set_message("Select an entry below:");
-	menu_stack->map(menu);
 
 	/* Menu run-time */
 	/* Loop will cause the menu selection process to continue
@@ -60,9 +59,10 @@ int debug_menu::main_menu()		/* All menus should follow this format: */
 	 */
 	while(true)
 	{
-		/* Allow user to select an entry */
+		menu_stack->map(menu);	/* Also replaces window when child is closed */
 		int selected_entry = menu->select_item();
-		/* Decide what that choice means */
+		menu_stack->unmap();	/* Makes windows non-stacking */
+
 		switch(selected_entry)
 		{
 		  case 0:			/* X10 Devices */
@@ -110,7 +110,6 @@ void debug_menu::time_menu()	/* Not really a menu! */
 	                 "Current UDT : " + to_string(currentUDT) + "\n");
 	menu_stack->map(win);
 	getch();		/* Press any key to continue... */
-
 	menu_stack->unmap();
 	delete win;
 	win = 0;
@@ -135,11 +134,13 @@ void debug_menu::x10_menu()
 	menu = new style::basic_menu(MyConf, options);
 	menu->set_title("X10 Devices");
 	menu->set_message("The following X10 devices are connected:");
-	menu_stack->map(menu);
 
 	while(true)
 	{
+		menu_stack->map(menu);
 		int selected_entry = menu->select_item();
+		menu_stack->unmap();
+
 		if(selected_entry == x10_list.size() )	/* Last entry (i.e. quit) */
 		{
 			menu_stack->unmap();
@@ -179,11 +180,14 @@ void debug_menu::x10_menu_specific(x10dev* specific)
 	menu->set_message("Name:    " + specific->get_name() + "\n" +
 	                  "Address: " + "Unknown" + "\n" +
 	                  "Status:  " + specific_status + "\n");
-	menu_stack->map(menu);
 
 	while(true)
 	{
-		switch(menu->select_item() )
+		menu_stack->map(menu);
+		int selected_entry = menu->select_item();
+		menu_stack->unmap();
+
+		switch(selected_entry)
 		{
 		  case 0:	/* Activate */
 			specific->on();

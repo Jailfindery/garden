@@ -169,10 +169,26 @@ int basic_win::update_std()
 	return result;
 }
 
+/* Used to deal with ncurses' strange way of
+ * refreshing windows.
+ */
+int render::frefresh()
+{
+	int result = 0;
+	std::vector<basic_win*>::iterator iter;
+	for(iter = win_list.begin(); iter < win_list.end(); iter++)
+	{
+		basic_win* temp = *iter;
+		result |= temp->update();
+	}
+	return result;
+}
+
 int render::map(basic_win* win)
 {
 	win_list.push_back(win);
 	int result = win->update();
+	result |= frefresh();	/* Workaround to make refreshes easier. */
 	return result;
 }
 
@@ -188,10 +204,9 @@ int render::unmap()
 	for(iter = win_list.begin(); iter < win_list.end(); iter++)
 	{
 		basic_win* temp = *iter;
-		temp->update();		/* Does this call basic_menu or
-							 * similar's update()?
-							 */
-	}	
+		temp->update();
+	}
+	result |= frefresh();	/* Same workaround as above. */
 	return result;
 }
 
