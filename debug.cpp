@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-	cout << "Reading configuration file... ";
+	cout << "Reading configuration file...";
 
 	conf_file* MyConf;	/* Search for a conf file */
 	if(argc > 1)
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 		}
 		catch(string& except)	/* Conf file does not exists */
 		{
-			cerr << "failed!" << endl;
+			cerr << " failed!" << endl;
 			cerr << "E:" << except << endl;
 			cerr << "Unable to process provided configuration file." << endl;
 			return -1;
@@ -53,26 +53,26 @@ int main(int argc, char** argv)
 	}
 	if(MyConf == 0)		/* If no configuration was found at this point... */
 	{
-		cerr << "failed!" << endl;
+		cerr << " failed!" << endl;
 		cerr << "E: No suitable configuration file was found." << endl;
 		cerr << "Please create one in /etc/garden.conf or ~/.gardenrc." << endl;
 		return -1;
 	}
-	cout << "done." << endl;
+	cout << " done." << endl;
 
 	/* TODO: Make X10 Firecracker path configurable. */
-	cout << "Opening X10 Firecracker module... ";
+	cout << "Opening X10 Firecracker module...";
 	if(x10dev::open_device("/dev/ttyUSB0") < 3)	/* We should not use stdout. */
 	{
-		cerr << "failed!" << endl;
+		cerr << " failed!" << endl;
 		cerr << "E: Unable to open Firecracker module." << endl;
 		return -1;
 	}
-	cout << "done." << endl;
+	cout << " done." << endl;
 
 	debug_menu* MyMenu = new debug_menu;	/* Create the TUI */
 
-	cout << "Populating X10 devices... ";
+	cout << "Populating X10 devices...";
 	vector<x10dev*> device_list;
 	for(int i = 0; i < MyConf->x10_number; i++)
 	{
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
 		}
 		catch(string& except)
 		{
-			cerr << "failed!" << endl;
+			cerr << " failed!" << endl;
 			cerr << "E: X10 device, index " << i << ": ";
 			cerr << except << endl;
 
@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 		device_list.push_back(temp_x10);	/* TODO: Use list in debug_menu */
 		MyMenu->add_x10(temp_x10);
 	}
-	cout << "done." << endl;
+	cout << " done." << endl;
 
 	/* TODO: Add circuit initialization. */
 
@@ -114,12 +114,15 @@ int main(int argc, char** argv)
 	/* Stopping and clean-up */
 	delete MyMenu;
 	MyMenu = 0;
+	cout << "Closing X10 devices...";
+	cout.flush();
 	for(int i = 0; i < device_list.size(); i++)
 	{
 		delete device_list[i];
 		device_list[i] = 0;
 	}
 	x10dev::close_device();
+	cout << " done." << endl;
 	return menu_return;
 }
 
