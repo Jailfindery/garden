@@ -95,6 +95,7 @@ int main(int argc, char** argv)
 			MyMenu = 0;
 			return -1;
 		}
+		device_list.push_back(temp_x10);	/* TODO: Use list in debug_menu */
 		MyMenu->add_x10(temp_x10);
 	}
 	cout << "done." << endl;
