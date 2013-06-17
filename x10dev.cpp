@@ -28,6 +28,7 @@ extern "C" {
 #include "br/br_cmd.h"
 }
 
+#include "conversion.h"
 #include "x10dev.h"
 
 using namespace std;
@@ -38,6 +39,10 @@ x10dev::x10dev(char house, int unit, string new_name)
 {
 	/** Calculate address */
 	house = toupper(house);	/* Ensures it is upper case */
+
+	/* Stores readable address information */
+	address_struct.housecode = house;
+	address_struct.unit = unit;
 
 	unsigned char housetemp;
 	unsigned char unittemp;
@@ -124,11 +129,21 @@ x10dev::x10dev(char house, int unit, string new_name)
 	name = new_name;
 
 	off();	/* Make sure it is off before using */
+	return;
 }
 
 x10dev::~x10dev()
 {
-	off();
+	if(status)
+		off();
+	return;
+}
+
+string x10dev::get_address_readable()
+{
+	string address = address_struct.housecode +
+	                 to_string(address_struct.unit);
+	return address;
 }
 
 string x10dev::get_status()

@@ -200,7 +200,7 @@ string debug_menu::set_x10_message(x10dev* specific)
 {
 	string message;
 	message = "Name: " + specific->get_name() + "\n" +
-	          "Address: " + "Unknown" + "\n" +	/* TODO: Add address info */
+	          "Address: " + specific->get_address_readable() + "\n" +
 	          "Status: " + specific->get_status() + "\n";
 	return message;
 }

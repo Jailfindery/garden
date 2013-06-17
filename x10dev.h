@@ -29,6 +29,12 @@
 
 using namespace std;
 
+struct address_t	/* Stores readable address data */
+{
+	char housecode;
+	int unit;
+};
+
 struct x10dev_info	/* A lightweight struct with information about x10devs */
 {
 	x10dev_info(int index, int MyOn, int MyOff) : off_time(MyOff),
@@ -52,6 +58,7 @@ class x10dev
   private:
 	static int device;		/* X10 Firecracker module file descriptor */
 	unsigned char address;
+	address_t address_struct;
 	string name;
 	bool status;
 
@@ -73,6 +80,7 @@ class x10dev
 public:
 	x10dev(char house, int unit, string new_name);
 	virtual ~x10dev();
+	string get_address_readable();
 	string get_status();
 	static int open_device(string path);
 	static void close_device();

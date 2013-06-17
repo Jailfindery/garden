@@ -21,25 +21,12 @@
 #ifndef CONVERSION_H_INCLUDED
 #define CONVERSION_H_INCLUDED
 
-#include <sstream>
 #include <string>
 
 using namespace std;
 
-string IntToString(int MyInt)
-{
-	ostringstream converter;
-	converter << MyInt;
-	return converter.str();
-}
-
-int StringToInt(string MyString)
-{
-	istringstream converter(MyString);
-	int result;
-	converter >> result;
-	return result;
-}
+string to_string(int MyInt);
+int StringToInteger(string MyStr);
 
 #endif /* CONVERSION_H_INCLUDED */
 

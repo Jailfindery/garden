@@ -57,7 +57,7 @@ string GetReadableTime()	// [ HH:MM:SS - XXXXX ], where X is unix day time.
 	{
 		result += "0";
 	}
-	result += IntToString(Hour);
+	result += to_string(Hour);
 
 	result += ":";
 
@@ -65,7 +65,7 @@ string GetReadableTime()	// [ HH:MM:SS - XXXXX ], where X is unix day time.
 	{
 		result += "0";
 	}
-	result += IntToString(Minute);
+	result += to_string(Minute);
 
 	result += ":";
 
@@ -73,10 +73,10 @@ string GetReadableTime()	// [ HH:MM:SS - XXXXX ], where X is unix day time.
 	{
 		result += "0";
 	}
-	result += IntToString(Second);
+	result += to_string(Second);
 
 	result += " - ";
-	result += IntToString(Current);
+	result += to_string(Current);
 	result += " ]";
 
 	return result;
