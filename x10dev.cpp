@@ -131,6 +131,14 @@ x10dev::~x10dev()
 	off();
 }
 
+string x10dev::get_status()
+{
+	if(status)
+		return string("Active");
+	else
+		return string("Inactive");
+}
+
 int x10dev::open_device(string path)
 {
 	/* Ensures that one does not open the stdout of

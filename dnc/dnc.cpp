@@ -142,6 +142,7 @@ int basic_win::set_colour_std(int colour_pair)
 
 void basic_win::set_title(std::string new_title)
 {
+	title = new_title;
 	int maxy, maxx, x;
 	getmaxyx(win, maxy, maxx);
 	x = ((maxx - (new_title.length() + 2)) / 2);
@@ -169,7 +170,7 @@ int basic_win::update_std()
 	return result;
 }
 
-/* Used to deal with ncurses' strange way of
+/* REDUNDANT: Used to deal with ncurses' strange way of
  * refreshing windows.
  */
 int render::frefresh()
@@ -188,7 +189,7 @@ int render::map(basic_win* win)
 {
 	win_list.push_back(win);
 	int result = win->update();
-	result |= frefresh();	/* Workaround to make refreshes easier. */
+	//result |= frefresh();	/* Workaround to make refreshes easier. */
 	return result;
 }
 
@@ -206,7 +207,7 @@ int render::unmap()
 		basic_win* temp = *iter;
 		temp->update();
 	}
-	result |= frefresh();	/* Same workaround as above. */
+	//result |= frefresh();	/* Same workaround as above. */
 	return result;
 }
 
@@ -222,17 +223,21 @@ void message_win::set_message(std::string new_message)
 		/* (width - 2) is the max horizontal length */
 		if(new_message[i] == '\n')
 		{
+			for(; x < (maxx - 2); x++)	/* Reset until end of line */
+				mvwaddch(win, y, x, ' ');
+
+			/* Prepare cursor position for next line */
 			x = 1;	/* x will be incremented after continue */
 			y++;
-			if(y >= (maxy - 2) )
-				break;
+			if(y >= (maxy - 2) )	/* Checks if extra lines exist */
+				break;		/* If not, cut off message. */
 			continue;
 		}
 		if(x >= (maxx - 2) )
 		{
 			x = 2;
 			y++;
-			if(y >= (maxy - 2) )	/* Max height - if exceeded, text will be cut off */
+			if(y >= (maxy - 2) )	/* Max height - text will be cut off */
 				break;
 		}
 

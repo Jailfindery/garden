@@ -73,7 +73,6 @@ int debug_menu::main_menu()		/* All menus should follow this format: */
 			break;
 		  case 2:			/* Quit */
 			/* Destruct the stuff before quiting */
-			menu_stack->unmap();
 			delete menu;
 			menu = 0;
 			return 0;
@@ -143,7 +142,6 @@ void debug_menu::x10_menu()
 
 		if(selected_entry == x10_list.size() )	/* Last entry (i.e. quit) */
 		{
-			menu_stack->unmap();
 			delete menu;
 			menu = 0;
 			return;
@@ -167,22 +165,13 @@ void debug_menu::x10_menu_specific(x10dev* specific)
 
 	const char* options[4] = { "Activate", "Deactivate", "Exit", NULL };
 
-	/* Prepare specific X10 information */
-	string specific_status;
-	if(specific->get_status() )
-		specific_status = "On";
-	else
-		specific_status = "Off";
-
 	/* TODO: Fix address display */
 	menu = new style::basic_menu(MyConf, options);
 	menu->set_title(specific->get_name() + " Menu");
-	menu->set_message("Name:    " + specific->get_name() + "\n" +
-	                  "Address: " + "Unknown" + "\n" +
-	                  "Status:  " + specific_status + "\n");
 
 	while(true)
 	{
+		menu->set_message(set_x10_message(specific) );	/* Off-loaded */
 		menu_stack->map(menu);
 		int selected_entry = menu->select_item();
 		menu_stack->unmap();
@@ -191,16 +180,11 @@ void debug_menu::x10_menu_specific(x10dev* specific)
 		{
 		  case 0:	/* Activate */
 			specific->on();
-			menu_stack->unmap();		/* Updates information */
-			menu_stack->map(menu);
 			break;
 		  case 1:	/* Deactivate */
 			specific->off();
-			menu_stack->unmap();
-			menu_stack->map(menu);
 			break;
 		  case 2:
-			menu_stack->unmap();
 			delete menu;
 			menu = 0;
 			return;
@@ -210,5 +194,14 @@ void debug_menu::x10_menu_specific(x10dev* specific)
 		}
 	}
 	return;
+}
+
+string debug_menu::set_x10_message(x10dev* specific)
+{
+	string message;
+	message = "Name: " + specific->get_name() + "\n" +
+	          "Address: " + "Unknown" + "\n" +	/* TODO: Add address info */
+	          "Status: " + specific->get_status() + "\n";
+	return message;
 }
 

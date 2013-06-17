@@ -49,25 +49,22 @@ class x10dev
  */
   friend class Interface;	/* Allows Interface to activate it */
 
-  /* Allows the debugging interface to
-   * access it directly.
-   */
-  #ifdef GARDEN_DEBUG
-  friend void debug_menu::x10_menu_specific(x10dev*);
-  #endif /* GARDEN_DEBUG */
-
   private:
 	static int device;		/* X10 Firecracker module file descriptor */
 	unsigned char address;
 	string name;
 	bool status;
-  #ifdef X10DEV_TESTING
+
+/* ifdef allows debug application to acces on() and off()
+ * members directly.
+ */
+#ifdef GARDEN_DEBUG
   public:
-  #endif
+#endif/* GARDEN_DEBUG */
 	int on();
 	int off();
 /*
- * on() and off() members return:
+ * TODO: on() and off() members return:
  *
  * -1 when unable to turn on
  * 1 if it is already on, but still successful
@@ -76,7 +73,7 @@ class x10dev
 public:
 	x10dev(char house, int unit, string new_name);
 	virtual ~x10dev();
-	bool get_status() { return status; }
+	string get_status();
 	static int open_device(string path);
 	static void close_device();
 	string get_name() { return name; }

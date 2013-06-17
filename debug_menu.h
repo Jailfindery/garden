@@ -2,6 +2,7 @@
 #define DEBUG_MENU_H_INCLUDED
 
 #include <vector>
+#include <string>
 
 #include "dnc/dnc.h"
 #include "x10dev.h"
@@ -26,6 +27,7 @@ class debug_menu
 	void time_menu();
 	void x10_menu();
 	void x10_menu_specific(x10dev* specific);
+	std::string set_x10_message(x10dev* specific);
   public:
 	debug_menu();
 	~debug_menu();
