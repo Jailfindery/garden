@@ -93,9 +93,9 @@ void debug_menu::time_menu()	/* Not really a menu! */
 	style::basic_progress* win;
 	style::winconf_t MyConf;
 	MyConf.height = 11;
-	MyConf.width = (maxx - 40);
+	MyConf.width = (maxx - 20);
 	MyConf.startx = (maxy - 9) / 2;
-	MyConf.starty = 20;
+	MyConf.starty = 10;
 
 	/* Preparing time stuff */
 	time_t MyTime = time(NULL);	/* ctime() requires time_t* */
