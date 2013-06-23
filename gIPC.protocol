@@ -1,0 +1,36 @@
+garden Inter-Process Communication (gIPC) Protocol v0.1
+
+Three types of directives control communication in this protocol:
+
+1. Connection Control
+	Used to control connections with garden IPC:
+		GET GIPCx.x - Client: requests hydrogarden information.	'x.x' is the
+			protocol version in use.
+		OK - Client: Affirms that the data transfer was successful.
+		SEND - Server: tells clients that their request will be served.
+		RETR - Server: notifies that the data transfer will be retried.
+		END - Server: signals the end of communication.
+
+2. Payload Delivery
+	Used to control how data is served:
+		STREAM_START - Server: marks the beginning of the data stream.
+		STREAM_STOP - Server: marks the end of the data stream.
+		X10 n h u s - Server: information regarding an X10 device. n = index,
+			h = housecode, u = unit, s = state.
+		PH l - Server: information regarding pH level. l = pH level (floating-
+			point).
+		LVL l - Server: information regarding water level. l = water level
+			(floating-point).
+		NUT l - Server: information regarding nutrient level. l = nutrient
+			level (floating-point).
+		TIME t - Server: information regarding time local to the hydrogarden.
+			t = time (UDT).
+
+3. Error
+	Used to signal that an error occurred during communication:
+		REFU - Server: refuses a client's request without giving a resaon.
+		CORR - Client: signals corrupt data from transfer. The response from
+			the server is implementation-defined.
+		WVER - Server: signals that the client version is incompatible with the
+			server version.
+
