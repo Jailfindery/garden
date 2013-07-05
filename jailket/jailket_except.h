@@ -88,7 +88,7 @@ class bind_error : public jailket_error
 	bind_error(const string& d) : jailket_error(d) {}
 };
 
-class connect_error		: public jailket_error
+class connect_error : public jailket_error
 {
   public:
 	connect_error(const string& d) : jailket_error(d) {}
@@ -100,31 +100,31 @@ class getaddrinfo_error : public jailket_error
 	getaddrinfo_error(const string& d) : jailket_error(d) {}
 };
 
-class inet_port_error	: public jailket_invalid_argument
+class inet_port_error : public jailket_invalid_argument
 {
   public:
 	inet_port_error(const string& d) : jailket_invalid_argument(d) {}
 };
 
-class listen_error		: public jailket_error
+class listen_error : public jailket_error
 {
   public:
 	listen_error(const string& d) : jailket_error(d) {}
 };
 
-class not_connected		: public jailket_error
+class not_connected : public jailket_error
 {
   public:
 	not_connected(const string& d) : jailket_error(d) {}
 };
 
-class setsockopt_error	: public jailket_error
+class setsockopt_error : public jailket_error
 {
   public:
 	setsockopt_error(const string& d) : jailket_error(d) {}
 };
 
-class socket_error		: public jailket_error
+class socket_error : public jailket_error
 {
   public:
 	socket_error(const string& d) : jailket_error(d) {}
