@@ -46,6 +46,7 @@ class server_socket
 	server_socket(inet_port service);
 	void listen();
 	client_connection* accept();
+	void close();
 };
 
 }

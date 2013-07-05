@@ -90,3 +90,9 @@ client_connection* server_socket::accept()
 	return temp;
 }
 
+void server_socket::close()
+{
+	::close(listen_fd);
+	return;
+}
+
