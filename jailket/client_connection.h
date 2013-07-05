@@ -29,16 +29,20 @@ using namespace std;
 
 namespace jailket {
 
+class server_socket;
+
 /* Exceptions:
  * not_connected	recv(), send()
  */
 class client_connection
 {
+  friend server_socket;
+
   private:
+	client_connection(int fd, client_address c) : socket_fd(fd), address(c) {}
 	int socket_fd;
 	client_address address;
   public:
-	client_connection(int fd, client_address c) : socket_fd(fd), address(c) {}
 	int send(string mes);
 	string recv();
 	void close();
