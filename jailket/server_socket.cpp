@@ -33,7 +33,7 @@ using namespace jailket;
 
 server_socket::server_socket(inet_port service)
 {
-    addrinfo filter;    /* Used to limit generated addresses */
+	addrinfo filter;    /* Used to limit generated addresses */
 	addrinfo* address;	/* Stores server address */
 	memset(&filter, 0, sizeof(addrinfo) );  /* Empties the filter struct */
 
