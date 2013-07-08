@@ -4,9 +4,10 @@
 
 #define GARDEN_DEBUG	/* Gives direct access to X10 devices. */
 
+#include <dnc/dnc.h>
+#include <dnc/dnc_menu.h>
+
 #include "clock.h"
-#include "dnc/dnc.h"
-#include "dnc/dnc_menu.h"
 #include "x10dev.h"
 
 #define DEBUG
