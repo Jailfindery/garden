@@ -22,6 +22,7 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include "client_address.h"
 #include "client_connection.h"
