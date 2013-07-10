@@ -61,22 +61,22 @@ clean:
 	-rm -f bin/garden_debug
 
 # Installations - requires root privledges
-dnc_install: dnc
+install_dnc: dnc
 	cp bin/libdnc.so /usr/local/lib/libdnc.so
 	cp bin/libdnc_menu.so /usr/local/lib/libdnc_menu.so
 	-mkdir /usr/local/include/dnc
 	cp dnc/*.h /usr/local/include/dnc/
-jailket_install: jailket
+install_jailket: jailket
 	cp bin/libjailket.so /usr/local/lib/libjailket.so
 	-mkdir /usr/local/include/jailket
 	cp jailket/*.h /usr/local/include/jailket/
 
 # Uninstallations - requires root privledges
-dnc_uninstall:
+uninstall_dnc:
 	-rm -f /usr/local/lib/libdnc.so
 	-rm -f /usr/local/include/dnc/*.h
 	-rmdir /usr/local/include/dnc
-jailket_uninstall:
+uninstall_jailket:
 	-rm -f /usr/local/lib/libjailket.so
 	-rm -f /usr/local/include/jailket/*.h
 	-rmdir /usr/local/include/jailket
