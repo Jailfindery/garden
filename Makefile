@@ -44,7 +44,7 @@ obj/debug.o: debug.cpp
 obj/debug_menu.o: debug_menu.cpp
 	g++ -c debug_menu.cpp -o obj/debug_menu.o -std=c++11
 obj/inet_port.o: jailket/inet_port.cpp
-	g++ -c jailket/inet_port.cpp -o obj/inet_port.o -fPIC
+	g++ -c jailket/inet_port.cpp -o obj/inet_port.o -fPIC -std=c++11
 obj/jailket_except.o: jailket/jailket_except.cpp
 	g++ -c jailket/jailket_except.cpp -o obj/jailket_except.o -fPIC
 obj/server_address.o: jailket/server_address.cpp
