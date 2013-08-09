@@ -28,7 +28,6 @@ extern "C" {
 #include "br/br_cmd.h"
 }
 
-#include "conversion.h"
 #include "x10dev.h"
 
 using namespace std;

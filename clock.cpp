@@ -1,7 +1,7 @@
 /*
  *
  *  Time functions for getting and formatting current time for garden.
- *  Copyright (C) 2012 Joshua Schell (joshua.g.schell@gmail.com)
+ *  Copyright (C) 2013 Joshua Schell (joshua.g.schell@gmail.com)
  *
  *  garden is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,9 @@
  *
  */
 
+#include <string>
+
 #include <time.h>
-#include "conversion.h"
 
 using namespace std;
 

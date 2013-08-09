@@ -1,5 +1,5 @@
-GARDEN_DEBUG_OBJECTS= obj/br_cmd.o obj/conversion.o obj/clock.o \
-    obj/conf_file.o obj/debug.o obj/debug_menu.o obj/x10dev.o
+GARDEN_DEBUG_OBJECTS= obj/br_cmd.o obj/clock.o obj/conf_file.o \
+    obj/debug.o obj/debug_menu.o obj/x10dev.o
 JAILKET_OBJECTS= obj/client_connection.o obj/client_socket.o obj/inet_port.o \
     obj/jailket_except.o obj/server_address.o obj/server_socket.o
 
@@ -29,10 +29,8 @@ obj/client_connection.o: jailket/client_connection.cpp
 	g++ -c jailket/client_connection.cpp -o obj/client_connection.o -fPIC
 obj/client_socket.o: jailket/client_socket.cpp
 	g++ -c jailket/client_socket.cpp -o obj/client_socket.o -fPIC
-obj/conversion.o: conversion.cpp
-	g++ -c conversion.cpp -o obj/conversion.o
 obj/clock.o: clock.cpp
-	g++ -c clock.cpp -o obj/clock.o
+	g++ -c clock.cpp -o obj/clock.o -std=c++11
 obj/conf_file.o: conf_file.cpp
 	g++ -c conf_file.cpp -o obj/conf_file.o -std=c++11
 obj/dnc.o: dnc/dnc.cpp
@@ -52,7 +50,7 @@ obj/server_address.o: jailket/server_address.cpp
 obj/server_socket.o: jailket/server_socket.cpp
 	g++ -c jailket/server_socket.cpp -o obj/server_socket.o -fPIC
 obj/x10dev.o: x10dev.cpp
-	g++ -c x10dev.cpp -o obj/x10dev.o
+	g++ -c x10dev.cpp -o obj/x10dev.o -std=c++11
 
 # Clean
 clean:
