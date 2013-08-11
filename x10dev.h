@@ -21,69 +21,37 @@
 #ifndef X10DEV_H_INCLUDED
 #define X10DEV_H_INCLUDED
 
-#ifdef GARDEN_DEBUG
-#include "debug_menu.h"
-#endif
-
 #include <string>
 
 using namespace std;
 
-struct address_t	/* Stores readable address data */
-{
-	char housecode;
-	int unit;
-};
-
-struct x10dev_info	/* A lightweight struct with information about x10devs */
-{
-	x10dev_info(int index, int MyOn, int MyOff) : off_time(MyOff),
-	                                              on_time(MyOn) {}
-	int index;
-	/* Unique, consistent ID for use in the Interface 
-	 * NB! Consistent of the index depends
-	 * on the implementation.
-	 */
-	int off_time;
-	int on_time;
-};
-
+/* Exceptions:
+    * invalid_argument - Constructor
+ */
 class x10dev
 {
-/* Static members represent the
- * actual X10 Firecracker module.
- */
-  friend class Interface;	/* Allows Interface to activate it */
-
   private:
-	static int device;		/* X10 Firecracker module file descriptor */
-	unsigned char address;
-	address_t address_struct;
+	/* X10 meta-data */
+	char housecode;
+	int unit;
 	string name;
-	bool status;
+	unsigned char address;	/* br_cmd uses this */
 
-/* ifdef allows debug application to acces on() and off()
- * members directly.
- */
-#ifdef GARDEN_DEBUG
-  public:
-#endif/* GARDEN_DEBUG */
-	int on();
-	int off();
-/*
- * TODO: on() and off() members return:
- *
- * -1 when unable to turn on
- * 1 if it is already on, but still successful
- *
- */
+	/* Used with the scheduler */
+	int on_time;
+	int off_time;
+
+	/* X10 state information */
+	bool status;
 public:
-	x10dev(char house, int unit, string new_name);
-	virtual ~x10dev();
-	string get_address_readable();
-	string get_status();
-	static int open_device(string path);
-	static void close_device();
+	x10dev(char house, int unit, string new_name, int _on, int _off);
+	/* NB! One must ensure that the X10 device is off _manually_. */
+
+	/* Access methods */
+	bool get_status() { return status; };
+	/* For get_times(), first is the on time, second is the off time. */
+	pair<int, int> get_times() { return make_pair(on_time, off_time); } 
+	string get_address_readable() { return housecode + to_string(unit); };
 	string get_name() { return name; }
 	unsigned char get_address() { return address; }
 };

@@ -18,35 +18,24 @@
  *
  */
 
-#include <fcntl.h>
+#include <stdexcept>
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
-extern "C" {
-#include "br/br_cmd.h"
-}
+#include <cctype>
 
 #include "x10dev.h"
 
 using namespace std;
 
-int x10dev::device = -1;	/* Allocate storage for static members */
-
-x10dev::x10dev(char house, int unit, string new_name)
+x10dev::x10dev(char _housecode, int _unit, string _name, int _on, int _off) :
+	unit(_unit), name(_name), on_time(_on), off_time(_off)
 {
-	/** Calculate address */
-	house = toupper(house);	/* Ensures it is upper case */
-
-	/* Stores readable address information */
-	address_struct.housecode = house;
-	address_struct.unit = unit;
+	housecode = toupper(_housecode);	/* Ensures it is upper case */
 
 	unsigned char housetemp;
 	unsigned char unittemp;
 
-	switch(house)
+	switch(_housecode)
 	{
 	case 'A':	housetemp = 0x00;
 				break;
@@ -80,8 +69,8 @@ x10dev::x10dev(char house, int unit, string new_name)
 				break;
 	case 'P':	housetemp = 0xf0;
 				break;
-	default:	throw string("Not a valid housecode [A-P]");
-				break;
+	default:	throw invalid_argument('\"' + _housecode + '\"' +
+				                       " is not a valid housecode [A-P]");
 	}
 
 	switch(unit)
@@ -118,85 +107,11 @@ x10dev::x10dev(char house, int unit, string new_name)
 				break;
 	case 16:	unittemp = 0x0f;
 				break;
-	default:	throw string("Not a valid unit [1-16]");
+	default:	throw invalid_argument('\"' + _unit + '\"' +
+				                       " is not a valid unit [1-16]");
 				break;
 	}
 
 	address = housetemp | unittemp;
-
-	/** Set device name */
-	name = new_name;
-
-	off();	/* Make sure it is off before using */
-	return;
-}
-
-x10dev::~x10dev()
-{
-	if(status)
-		off();
-	return;
-}
-
-string x10dev::get_address_readable()
-{
-	string address = address_struct.housecode +
-	                 to_string(address_struct.unit);
-	return address;
-}
-
-string x10dev::get_status()
-{
-	if(status)
-		return string("Active");
-	else
-		return string("Inactive");
-}
-
-int x10dev::open_device(string path)
-{
-	/* Ensures that one does not open the stdout of
-	 * the device.
-	 */
-	while( (device = open("/dev/null", 0, 0) ) < 3)
-		if(device < 0)
-			return -1;
-	close(device);
-
-	device = open(path.c_str(), O_RDONLY | O_NONBLOCK);
-	return device;
-}
-
-void x10dev::close_device()
-{
-	close(device);
-}
-
-/*
- * Commands for br are:
- *  0 - on
- *  1 - off
- *
- * See br_cmd.h for more details
- *
- */
-
-/* TODO: Create checks so the program does not block
- *       if the desired state already exists.
- */
-int x10dev::on()
-{
-	if(br_cmd(device, address, 0) < 0)
-		return -1;
-	status = true;
-	return 0;
-}
-
-int x10dev::off()
-{
-	if(br_cmd(device, address, 1) < 0)
-		return -1;
-	status = false;
-	return 0;
 }
 
