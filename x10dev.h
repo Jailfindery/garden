@@ -25,11 +25,15 @@
 
 using namespace std;
 
+class fc_module;
+
 /* Exceptions:
     * invalid_argument - Constructor
  */
 class x10dev
 {
+  friend class fc_module;
+
   private:
 	/* X10 meta-data */
 	char housecode;
@@ -43,11 +47,15 @@ class x10dev
 
 	/* X10 state information */
 	bool status;
-public:
-	x10dev(char house, int unit, string new_name, int _on, int _off);
-	/* NB! One must ensure that the X10 device is off _manually_. */
 
-	/* Access methods */
+	/* Set access methods */
+	void set_status(bool _status) { status = _status; }
+
+public:
+	/* NB! One must ensure that the X10 device is off _manually_. */
+	x10dev(char house, int unit, string new_name, int _on, int _off);
+
+	/* Get access methods */
 	bool get_status() { return status; };
 	/* For get_times(), first is the on time, second is the off time. */
 	pair<int, int> get_times() { return make_pair(on_time, off_time); } 

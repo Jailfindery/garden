@@ -35,7 +35,7 @@ x10dev::x10dev(char _housecode, int _unit, string _name, int _on, int _off) :
 	unsigned char housetemp;
 	unsigned char unittemp;
 
-	switch(_housecode)
+	switch(housecode)
 	{
 	case 'A':	housetemp = 0x00;
 				break;
@@ -69,8 +69,9 @@ x10dev::x10dev(char _housecode, int _unit, string _name, int _on, int _off) :
 				break;
 	case 'P':	housetemp = 0xf0;
 				break;
-	default:	throw invalid_argument('\"' + _housecode + '\"' +
+	default:	throw invalid_argument(string(1, housecode) +
 				                       " is not a valid housecode [A-P]");
+				break;
 	}
 
 	switch(unit)
@@ -107,7 +108,7 @@ x10dev::x10dev(char _housecode, int _unit, string _name, int _on, int _off) :
 				break;
 	case 16:	unittemp = 0x0f;
 				break;
-	default:	throw invalid_argument('\"' + _unit + '\"' +
+	default:	throw invalid_argument(to_string(unit) +
 				                       " is not a valid unit [1-16]");
 				break;
 	}

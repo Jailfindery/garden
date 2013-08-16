@@ -55,7 +55,7 @@ class conf_file
 
 	/* Add configuration variables here */
 	int x10_number;
-	vector<x10dev_conf*> x10_devices;
+	vector<x10dev_conf> x10_devices;
 	int ph_pin;
 	int nutrient_pin;
 	int level_pin;

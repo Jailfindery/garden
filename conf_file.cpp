@@ -110,8 +110,7 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 
 			for(int k = 0; k < x10_number; k++)	/* Allocate device space */
 			{
-				x10dev_conf* MyDev = new x10dev_conf;
-				x10_devices.push_back(MyDev);
+				x10_devices.push_back(x10dev_conf);
 				#ifdef DEBUG
 				cout << "Created new x10 device." << k << endl;
 				#endif
@@ -157,13 +156,13 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 			{
 				if(variable == "x10dev" + to_string( (long long int)k) + ".name")
 				{
-					x10_devices[k]->name = data;
+					x10_devices[k].name = data;
 				}
 				else if(variable == "x10dev" + to_string( (long long int)k) + ".on_time")
 				{
 					try
 					{
-						x10_devices[k]->on_time = stoi(data);
+						x10_devices[k].on_time = stoi(data);
 					}
 					catch(...)
 					{
@@ -174,7 +173,7 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 				{
 					try
 					{
-						x10_devices[k]->off_time = stoi(data);
+						x10_devices[k].off_time = stoi(data);
 					}
 					catch(...)
 					{
@@ -188,7 +187,7 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 
 					/* Finds the housecode */
 					if(toupper(data[0]) >= 'A' && toupper(data[0]) <= 'P')
-						x10_devices[k]->housecode = toupper(data[0]);
+						x10_devices[k].housecode = toupper(data[0]);
 					else
 						throw error_data(i, data);
 
@@ -200,7 +199,7 @@ conf_file::conf_file(string file_path) : conf_name(file_path)
 						{
 							string temp = "";
 							temp += data[1];
-							x10_devices[k]->unit = stoi(temp);
+							x10_devices[k].unit = stoi(temp);
 						}
 						catch(...)
 						{

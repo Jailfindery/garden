@@ -64,17 +64,19 @@ fc_module::~fc_module()
  * Because X10 devices do not have two-way communication, can one assume that it
  * is off when it is created or even if the on/off command worked?
  */
-pair<int, string> fc_module::on(x10dev _dev)
+pair<int, string> fc_module::on(x10dev& _dev)
 {
 	if(br_cmd(fd, _dev.get_address(), br_command::on) < 0)	/* If it failed */
 		return make_pair(-1, _dev.get_name() + ": Unable to activate");
+	_dev.set_status(1);	/* Set status for data collection */
 	return make_pair(0, _dev.get_name() + ": Activated successfully");
 }
 
-pair<int, string> fc_module::off(x10dev _dev)
+pair<int, string> fc_module::off(x10dev& _dev)
 {
 	if(br_cmd(fd, _dev.get_address(), br_command::off) < 0)	/* If it failed */
 		return make_pair(-1, _dev.get_name() + ": Unable to deactivate");
+	_dev.set_status(0);	/* Set status for data collection */
 	return make_pair(0, _dev.get_name() + ": Deactivated successfully");
 }
 

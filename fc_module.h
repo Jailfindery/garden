@@ -49,7 +49,7 @@ class fc_module
 	~fc_module();
 
 	/* X10 state-altering functions */
-	pair<int, string> on(x10dev _dev);
-	pair<int, string> off(x10dev _dev);
+	pair<int, string> on(x10dev& _dev);
+	pair<int, string> off(x10dev& _dev);
 };
 
