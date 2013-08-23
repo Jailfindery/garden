@@ -29,7 +29,7 @@ using namespace std;
 log_file::log_file(string new_path)
 {
 	path = new_path;
-	ofstream test_stream(new_path);
+	ofstream test_stream(path.c_str(), ios_base::app);
 	if(test_stream.fail() )		/* Ensures log file is available */
 		throw string("Unable to open log file for writing");
 	test_stream.close();
@@ -40,7 +40,7 @@ log_file::log_file(string new_path)
  */
 int log_file::write(string message)
 {
-	ofstream log(path.c_str(), ios_base::app | ios_base::out);
+	ofstream log(path.c_str(), ios_base::app);
 	if(log.fail() )
 		return -1;
 	log << (GetReadableTime() + " " + message) << endl;

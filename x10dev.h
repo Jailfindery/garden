@@ -41,10 +41,6 @@ class x10dev
 	string name;
 	unsigned char address;	/* br_cmd uses this */
 
-	/* Used with the scheduler */
-	int on_time;
-	int off_time;
-
 	/* X10 state information */
 	bool status;
 
@@ -53,12 +49,11 @@ class x10dev
 
 public:
 	/* NB! One must ensure that the X10 device is off _manually_. */
-	x10dev(char house, int unit, string new_name, int _on, int _off);
+	x10dev(char house, int unit, string new_name);
 
 	/* Get access methods */
 	bool get_status() { return status; };
 	/* For get_times(), first is the on time, second is the off time. */
-	pair<int, int> get_times() { return make_pair(on_time, off_time); } 
 	string get_address_readable() { return housecode + to_string(unit); };
 	string get_name() { return name; }
 	unsigned char get_address() { return address; }

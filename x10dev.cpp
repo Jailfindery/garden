@@ -27,8 +27,8 @@
 
 using namespace std;
 
-x10dev::x10dev(char _housecode, int _unit, string _name, int _on, int _off) :
-	unit(_unit), name(_name), on_time(_on), off_time(_off)
+x10dev::x10dev(char _housecode, int _unit, string _name) :
+	unit(_unit), name(_name)
 {
 	housecode = toupper(_housecode);	/* Ensures it is upper case */
 

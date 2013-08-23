@@ -44,12 +44,15 @@ class fc_module
 {
   private:
 	int fd;
+	string path;
+	void open();
+	void close();
   public:
-	fc_module(string path);
+	fc_module(string _path) : path(_path) {}
 	~fc_module();
 
 	/* X10 state-altering functions */
-	pair<int, string> on(x10dev& _dev);
-	pair<int, string> off(x10dev& _dev);
+	pair<int, string> on(x10dev* _dev);
+	pair<int, string> off(x10dev* _dev);
 };
 

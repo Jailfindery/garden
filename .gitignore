@@ -2,4 +2,6 @@ garden_debug
 Makefile.debug.old
 bin/*
 obj/*
+test/*
+log/*
 
