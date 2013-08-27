@@ -25,6 +25,9 @@
 
 using namespace std;
 
+/* Exceptions:
+ *  * log_file()	runtime_error
+ */
 class log_file
 {
   private:

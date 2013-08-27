@@ -19,6 +19,7 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include <string>
 
 #include "clock.h"
@@ -31,7 +32,7 @@ log_file::log_file(string new_path)
 	path = new_path;
 	ofstream test_stream(path.c_str(), ios_base::app);
 	if(test_stream.fail() )		/* Ensures log file is available */
-		throw string("Unable to open log file for writing");
+		throw runtime_error("Unable to open log file for writing");
 	test_stream.close();
 }
 
