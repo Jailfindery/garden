@@ -50,9 +50,9 @@ class hg_interface	/* NB! This object is not responsible any pointers */
 	 * of the error.
 	 */
 	void x10dev_alter(int i, bool state);
-	void add_fc_module(fc_module* _fcm) { fcm = _fcm; }
-	void add_log_file(log_file* _log) { log = _log; };
-	void add_x10dev(x10dev* _dev) { x10dev_list.push_back(_dev); }
+	void add_fc_module(fc_module& _fcm) { fcm = &_fcm; }
+	void add_log_file(log_file& _log) { log = &_log; };
+	void add_x10dev(x10dev& _dev) { x10dev_list.push_back(&_dev); }
 };
 
 #endif /* HG_INTERFACE_INCLUDED */

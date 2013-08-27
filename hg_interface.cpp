@@ -39,16 +39,12 @@ void hg_interface::x10dev_alter(int i, bool state)
 
 	/* Alter the x10 device accordingly */
 	pair<int, string> result;
-	if(state)
-		result = fcm->on(x10dev_list[i]);
-	else
-		result = fcm->off(x10dev_list[i]);
+	if(state)	result = fcm->on(x10dev_list[i]);
+	else		result = fcm->off(x10dev_list[i]);
 
 	/* Log the output */
 	/* TODO: Add more specific logging information? */
-	if(log != nullptr)
-		log->write(result.second);
-	else
-		cout << result.second << endl;
+	if(log != nullptr)	log->write(result.second);
+	else				cout << result.second << endl;
 }
 
